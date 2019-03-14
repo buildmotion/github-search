@@ -17,7 +17,22 @@
   - [Core and Shared Modules](#core-and-shared-modules)
     - [Shared Module](#shared-module)
     - [Core Module](#core-module)
-  - [Package Version](#package-version)
+    - [Material Design Module](#material-design-module)
+  - [Website Theme/Template](#website-themetemplate)
+    - [Routing](#routing)
+    - [Site Module](#site-module)
+    - [Search Layout Module](#search-layout-module)
+  - [Angular Version Information](#angular-version-information)
+  - [Nrwl.io Information](#nrwlio-information)
+    - [Nrwl Extensions for Angular (Nx)](#nrwl-extensions-for-angular-nx)
+    - [Quick Start & Documentation](#quick-start--documentation)
+    - [Generate your first application](#generate-your-first-application)
+    - [Development server](#development-server)
+    - [Code scaffolding](#code-scaffolding)
+    - [Build](#build)
+    - [Running unit tests](#running-unit-tests)
+    - [Running end-to-end tests](#running-end-to-end-tests)
+    - [Further help](#further-help)
 
 The objective of this application is to use the GitHub search API. 
 
@@ -591,9 +606,77 @@ export class SharedModule {
 
 ### Core Module
 
-``ts
+```ts
 ng g module modules/core --project=github-search-web
 CREATE apps/github-search-web/src/app/modules/core/core.module.ts (188 bytes)
+```
+
+> Note: Make sure to import the `CoreModule` into the `AppModule`. The `CoreModule` is a singleton - there
+> should only be one instance of this module for the entire application.
+
+```ts
+import {
+  NgModule,
+  Optional,
+  SkipSelf
+} from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+/** APPLICATION MODULES:
+ * Use this section to import application specific modules that are [NOT] 
+ * 3rd-party and/or Angular specific.
+ * 
+ * Importing this module is required to allow access to the public accessible
+ * members of the imported module (i.e., PageLayoutModule contains a 
+ * CardComponent).
+ */
+import { SiteModule } from './../site/site.module';
+import { SharedModule } from '../shared/shared.module';
+
+/** SERVICES:
+ * Import the [service] and add to the [providers] list. This will make 
+ * the specified service globally available to the application as a 
+ * singleton/single instance.
+ */
+
+/**
+ * Use the @NgModule attribute to configure the module members:
+ *
+ * - imports: import routes or modules;
+ * - declarations: a list of declarable items belonging to the module (components, directives, or pipes).
+ * - exports: list of components, directives, or pipes to make public to application;
+ * - providers: initializes a single instance of the specified service providers;
+ * - bootstrap (use for root module only): N/A
+ */
+@NgModule({
+  imports: [
+    CommonModule,
+    SharedModule,
+    SiteModule
+  ],
+  declarations: [],
+  exports: [
+    SharedModule,
+    SiteModule
+  ],
+  providers: []
+})
+export class CoreModule {
+  /**
+   * Use the check to determine if the [CoreModule] has been loaded in the parentModule (AppModule root).
+   */
+  constructor(
+    @Optional()
+    @SkipSelf()
+    parentModule: CoreModule
+  ) {
+    if (parentModule) {
+      throw new Error(
+        `CoreModule is already loaded. Import it in the AppModule only.`
+      );
+    }
+  }
+}
 ```
 
 ### Material Design Module
@@ -754,6 +837,137 @@ import {
   ]
 })
 export class MaterialDesignModule {}
+```
+
+## Website Theme/Template
+
+The application will take advantage of a professional theme/template - it will use the [Creative Tim - Material Dashboard Angular](https://www.creative-tim.com/product/material-dashboard-angular2). The next steps will be to add displayable items and their required dependencies.
+
+### Routing
+
+The application will require a default route and other routes to view details of the search and/or the of the GitHub user and repositories.
+
+```ts
+ng generate module modules/appRouting --project=github-search-web
+CREATE apps/github-search-web/src/app/modules/app-routing/app-routing.module.ts (194 bytes)
+```
+
+### Site Module
+
+```ts
+ng g module modules/site
+CREATE apps/github-search-web/src/app/modules/site/site.module.ts (188 bytes)
+```
+
+Add components for the site.
+
+```ts
+~~ng~~ g component modules/site/navbar
+CREATE apps/github-search-web/src/app/modules/site/navbar/navbar.component.html (25 bytes)
+CREATE apps/github-search-web/src/app/modules/site/navbar/navbar.component.spec.ts (628 bytes)
+CREATE apps/github-search-web/src/app/modules/site/navbar/navbar.component.ts (280 bytes)
+CREATE apps/github-search-web/src/app/modules/site/navbar/navbar.component.css (0 bytes)
+UPDATE apps/github-search-web/src/app/modules/site/site.module.ts (264 bytes)
+```
+
+```ts
+ng g component modules/site/sidebar
+CREATE apps/github-search-web/src/app/modules/site/sidebar/sidebar.component.html (26 bytes)
+CREATE apps/github-search-web/src/app/modules/site/sidebar/sidebar.component.spec.ts (635 bytes)
+CREATE apps/github-search-web/src/app/modules/site/sidebar/sidebar.component.ts (284 bytes)
+CREATE apps/github-search-web/src/app/modules/site/sidebar/sidebar.component.css (0 bytes)
+UPDATE apps/github-search-web/src/app/modules/site/site.module.ts (346 bytes)
+```
+
+```ts
+ng g component modules/site/footer
+CREATE apps/github-search-web/src/app/modules/site/footer/footer.component.html (25 bytes)
+CREATE apps/github-search-web/src/app/modules/site/footer/footer.component.spec.ts (628 bytes)
+CREATE apps/github-search-web/src/app/modules/site/footer/footer.component.ts (280 bytes)
+CREATE apps/github-search-web/src/app/modules/site/footer/footer.component.css (0 bytes)
+UPDATE apps/github-search-web/src/app/modules/site/site.module.ts (424 bytes)
+```
+
+> Note: Make sure to export the components in the `SiteModule` to allow them to be consumed.
+
+```ts
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { NavbarComponent } from './navbar/navbar.component';
+import { SidebarComponent } from './sidebar/sidebar.component';
+import { FooterComponent } from './footer/footer.component';
+
+@NgModule({
+  imports: [
+    CommonModule
+  ],
+  declarations: [NavbarComponent, SidebarComponent, FooterComponent],
+  exports: [
+    FooterComponent,
+    NavbarComponent,
+    SidebarComponent
+  ]
+})
+export class SiteModule { }
+```
+
+### Search Layout Module
+
+A `SearchLayoutModule` will be the container for the search feature of the application. This module will require
+its own routing and will be lazy-loaded.
+
+```ts
+ng generate module layouts/searchLayout --project=github-search-web --routing
+CREATE apps/github-search-web/src/app/layouts/search-layout/search-layout-routing.module.ts (255 bytes)
+CREATE apps/github-search-web/src/app/layouts/search-layout/search-layout.module.ts (304 bytes)
+```
+
+Add the target component.
+
+```ts
+ng generate component layouts/search-layout/search --project=github-search-web
+CREATE apps/github-search-web/src/app/layouts/search-layout/search/search.component.html (25 bytes)
+CREATE apps/github-search-web/src/app/layouts/search-layout/search/search.component.spec.ts (628 bytes)
+CREATE apps/github-search-web/src/app/layouts/search-layout/search/search.component.ts (280 bytes)
+CREATE apps/github-search-web/src/app/layouts/search-layout/search/search.component.css (0 bytes)
+UPDATE apps/github-search-web/src/app/layouts/search-layout/search-layout.module.ts (380 bytes)
+```
+
+Now that there is a domain module and a target component, the `AppRoutingModule` can be configured with a 
+default route. The default will use the `SearchComponent`. 
+
+```ts
+import { NgModule } from '@angular/core';
+import { CommonModule, } from '@angular/common';
+import { BrowserModule  } from '@angular/platform-browser';
+import { Routes, RouterModule } from '@angular/router';
+import { SearchComponent } from '../../layouts/search-layout/search/search.component';
+
+const routes: Routes =[
+  {
+    path: '',
+    redirectTo: 'dashboard',
+    pathMatch: 'full',
+  }, {
+    path: '',
+    component: SearchComponent,
+    children: [
+        {
+      path: '',
+      loadChildren: './layouts/search-layout/search-layout.module#SearchLayoutModule'
+  }]}
+];
+
+@NgModule({
+  imports: [
+    CommonModule,
+    BrowserModule,
+    RouterModule.forRoot(routes)
+  ],
+  exports: [
+  ],
+})
+export class AppRoutingModule { }
 ```
 
 ## Angular Version Information
