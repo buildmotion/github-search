@@ -13,6 +13,7 @@ import {
 } from '@angularlicious/logging';
 import { AlertNotification } from './models/alert-notification.model';
 import { AlertTypes } from './models/alert-types.constants';
+import { environment } from 'apps/github-search-web/src/environments/environment';
 
 export class ComponentBase {
   componentName: string;
@@ -20,6 +21,7 @@ export class ComponentBase {
   navSubscription: Subscription;
   currentUrl: string;
   previousUrl: string;
+  _isDebug: boolean;
 
   constructor(
     componentName: string,
@@ -201,4 +203,14 @@ export class ComponentBase {
   protected showAlertMessage(message: string): void {
     alert(message);
   }
+
+  /**
+   * Use to determine if the environment is [debug] or not. Returns [true]
+   * if the environment.production value is [false].
+   */
+  get isDebug(): boolean {
+    this._isDebug = (environment.production === false);
+    return this._isDebug;
+  }
+    
 }

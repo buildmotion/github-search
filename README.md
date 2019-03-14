@@ -23,6 +23,7 @@
     - [Site Module](#site-module)
     - [Search Layout Module](#search-layout-module)
     - [Styles](#styles)
+  - [GitHub Search Service](#github-search-service)
   - [Angular Version Information](#angular-version-information)
   - [Nrwl.io Information](#nrwlio-information)
     - [Nrwl Extensions for Angular (Nx)](#nrwl-extensions-for-angular-nx)
@@ -1049,6 +1050,186 @@ Use the template's `angular.json` configuration for the current app.
   "node_modules/bootstrap-notify/bootstrap-notify.js",
   "node_modules/chartist/dist/chartist.js"
 ]
+```
+
+## GitHub Search Service
+
+Create a new service module to implement the GitHub Search API.
+
+```ts
+ng g module services/githubSearch --project=github-search-web
+CREATE apps/github-search-web/src/app/services/github-search/github-search.module.ts (196 bytes)
+```
+
+Add a service to the module. The service will provide endpoints for the application components to consume.
+
+```ts
+ng g service services/github-search/githubSearch --project=github-search-web
+CREATE apps/github-search-web/src/app/services/github-search/github-search.service.spec.ts (364 bytes)
+CREATE apps/github-search-web/src/app/services/github-search/github-search.service.ts (141 bytes)
+```
+
+> Note: Add the module to the `CoreModule` and make sure to provide the service.
+
+```ts
+@NgModule({
+  imports: [
+    CommonModule,
+    GithubSearchModule,
+    SearchLayoutModule,
+    SharedModule,
+    SiteModule
+  ],
+  declarations: [],
+  exports: [
+    GithubSearchModule,
+    SearchLayoutModule,
+    SharedModule,
+    SiteModule
+  ],
+  providers: [
+    GithubSearchService // CREATES A GLOBAL INSTANCE OF THE SEARCH SERVICE; INJECTABLE;
+  ]
+})
+export class CoreModule {...}
+```
+
+Create an interface to define the search criteria that the search service will use. The `interface` should match the values collected by the search form.
+
+```ts
+
+export interface SearchCriteria {
+
+    owner: string;
+    fullName: string;
+}
+```
+
+The Search form is a basic Reactive Form with validation information.
+
+* text inputs
+* validation based on the form/control and validator status
+* submit button disabled until form is valid
+* form display the `value` of the form in JSON format (debugging purposes).
+
+```html
+<h2>GitHub Search: </h2>
+<p>Use the search to find GitHub repository and owner information.</p>
+
+<form novalidate (ngSubmit)="onSubmit(searchCriteria)" [formGroup]="searchCriteria">
+  <div>
+    <div class="error" *ngIf="searchCriteria.get('owner').hasError('required') && searchCriteria.get('owner').touched">
+      Owner name is required.
+    </div>
+    <div class="error" *ngIf="searchCriteria.get('owner').hasError('minlength') && searchCriteria.get('owner').touched">
+      Minimum of 2 characters
+    </div>
+    Owner: <input type="text" placeholder="buildmotion" formControlName="owner">
+  </div>
+
+  <div>
+    Full Name: <input type="text" placeholder="Matt Vaughn" formControlName="fullName">
+  </div>
+
+  <div>
+    <button type="submit" [disabled]="searchCriteria.invalid">Sign up</button>
+  </div>
+
+  <p *ngIf="searchCriteria.valid && ">
+    Form Value: {{ searchCriteria.value | json }}
+  </p>
+</form>
+```
+
+The form is implemented with `ReactiveFormsModule`. 
+
+* using FormBuilder to create a FormGroup
+* adding validation to the input controls.
+
+```ts
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { ComponentBase } from '@angularlicious/foundation';
+import { AngularliciousLoggingService, Severity } from '@angularlicious/logging';
+import { Router } from '@angular/router';
+// tslint:disable-next-line: nx-enforce-module-boundaries
+import { GithubSearchService } from 'apps/github-search-web/src/app/services/github-search/github-search.service';
+
+
+@Component({
+  selector: 'angularlicious-search-form',
+  templateUrl: './search-form.component.html',
+  styleUrls: ['./search-form.component.css']
+})
+export class SearchFormComponent extends ComponentBase implements OnInit {
+  searchCriteria: FormGroup;
+
+  constructor(
+    loggingService: AngularliciousLoggingService,
+    router: Router,
+    private formBuilder: FormBuilder,
+    private searchService: GithubSearchService
+  ) { 
+    super('SearchFormComponent', loggingService, router);
+  }
+
+  ngOnInit() {
+    this.searchCriteria = this.formBuilder.group(
+      {
+        owner: new FormControl('', [
+          Validators.required,
+          Validators.minLength(2)
+        ]),
+        fullName: new FormControl('')
+      }
+    );
+  }
+
+  onSubmit(criteria) {
+    this.loggingService.log(this.componentName, Severity.Information, `Preparing to process search criteria: ${JSON.stringify(criteria.value)}`)
+
+    // retrieve search criteria values and search GitHub using API
+    const searchCriteria = {...criteria.value};
+    this.searchService.searchByOwner(searchCriteria);
+  }
+
+}
+```
+
+Update the `GithubSearchService` with the following:
+
+* extend the class using the base service class
+* inject a logging service into the constructor
+* indicate the name of the service in the constructor
+* create a `searchGithub` method
+  * the input is defined by the `SearchCriteria` interface
+  * the method returns an Observable of type `ServiceResponse`
+
+```ts
+import { Injectable } from '@angular/core';
+import { ServiceBase, ServiceResponse } from '@angularlicious/foundation';
+import { AngularliciousLoggingService } from '@angularlicious/logging';
+import { Observable } from 'rxjs';
+import { SearchCriteria } from '../../layouts/search-layout/models/i-search-criteria.model';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class GithubSearchService extends ServiceBase {
+ 
+
+  constructor(
+    loggingService: AngularliciousLoggingService
+  ) { 
+    super(loggingService);
+    this.serviceName = 'GithubSearchService';
+  }
+
+  searchGithub(searchCriteria: SearchCriteria): Observable<ServiceResponse> {
+    throw new Error("Method not implemented.");
+  }
+}
+
 ```
 
 ## Angular Version Information

@@ -16,6 +16,8 @@ import { CommonModule } from '@angular/common';
 import { SiteModule } from './../site/site.module';
 import { SharedModule } from '../shared/shared.module';
 import { SearchLayoutModule } from '../../layouts/search-layout/search-layout.module';
+import { GithubSearchModule } from '../../services/github-search/github-search.module';
+import { GithubSearchService } from '../../services/github-search/github-search.service';
 
 /** SERVICES:
  * Import the [service] and add to the [providers] list. This will make 
@@ -35,17 +37,21 @@ import { SearchLayoutModule } from '../../layouts/search-layout/search-layout.mo
 @NgModule({
   imports: [
     CommonModule,
+    GithubSearchModule,
     SearchLayoutModule,
     SharedModule,
     SiteModule
   ],
   declarations: [],
   exports: [
+    GithubSearchModule,
     SearchLayoutModule,
     SharedModule,
     SiteModule
   ],
-  providers: []
+  providers: [
+    GithubSearchService // CREATES A GLOBAL INSTANCE OF THE SEARCH SERVICE; INJECTABLE;
+  ]
 })
 export class CoreModule {
   /**

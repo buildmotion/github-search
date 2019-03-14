@@ -3,6 +3,9 @@ import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms'
 import { ComponentBase } from '@angularlicious/foundation';
 import { AngularliciousLoggingService, Severity } from '@angularlicious/logging';
 import { Router } from '@angular/router';
+// tslint:disable-next-line: nx-enforce-module-boundaries
+import { GithubSearchService } from 'apps/github-search-web/src/app/services/github-search/github-search.service';
+import { environment } from 'apps/github-search-web/src/environments/environment';
 
 
 @Component({
@@ -16,7 +19,8 @@ export class SearchFormComponent extends ComponentBase implements OnInit {
   constructor(
     loggingService: AngularliciousLoggingService,
     router: Router,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private searchService: GithubSearchService
   ) { 
     super('SearchFormComponent', loggingService, router);
   }
@@ -37,7 +41,8 @@ export class SearchFormComponent extends ComponentBase implements OnInit {
     this.loggingService.log(this.componentName, Severity.Information, `Preparing to process search criteria: ${JSON.stringify(criteria.value)}`)
 
     // retrieve search criteria values and search GitHub using API
-    
+    const searchCriteria = {...criteria.value};
+    this.searchService.searchGithub(searchCriteria);
   }
 
 }
