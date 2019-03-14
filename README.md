@@ -14,17 +14,10 @@
     - [Foundation](#foundation)
     - [Business Actions](#business-actions)
     - [Rules Engine](#rules-engine)
-  - [Angular Version Information](#angular-version-information)
-  - [Nrwl.io Information](#nrwlio-information)
-    - [Nrwl Extensions for Angular (Nx)](#nrwl-extensions-for-angular-nx)
-    - [Quick Start & Documentation](#quick-start--documentation)
-    - [Generate your first application](#generate-your-first-application)
-    - [Development server](#development-server)
-    - [Code scaffolding](#code-scaffolding)
-    - [Build](#build)
-    - [Running unit tests](#running-unit-tests)
-    - [Running end-to-end tests](#running-end-to-end-tests)
-    - [Further help](#further-help)
+  - [Core and Shared Modules](#core-and-shared-modules)
+    - [Shared Module](#shared-module)
+    - [Core Module](#core-module)
+  - [Package Version](#package-version)
 
 The objective of this application is to use the GitHub search API. 
 
@@ -195,6 +188,50 @@ UPDATE nx.json (360 bytes)
 UPDATE tsconfig.json (514 bytes)
 ```
 
+The application `environment` configurations will need to be updated with:
+
+* application
+* appConfig: reference the actual `json` configuration file
+
+Each environment has the potential of a distinct configuration based on the target `appConfig` file that is referenced. 
+
+```ts
+export const environment = {
+  name: 'development',
+  application: 'angularlicious-github-search',
+  production: false,
+  appConfig: 'assets/config/configuration.development.json'
+};
+```
+
+Add (2) configuration files to the application (development and production). The initialization process of the application will use the settings defined in these configuration files to setup the application services and cross-cutting concerns. The `SharedModule` contains the application's initialization mechanisms.
+
+> Note: These configuration files should be ignored and NOT put into your code repository. They typically contain API information that you do not want to leak out into the public.
+
+```json
+{
+    "logging": {
+        "applicationName": "Angularlicious-GitHub-Search",
+        "version": "1.0",
+        "isProduction": false
+    },
+    "errorHandling": {
+        "name": "Angularlicious-GitHub-Search",
+        "includeDefaultErrorHandling": true
+    },
+    "loggly": {
+        "applicationName": "Angularlicious-GitHub-Search",
+        "version": "1.0",
+        "isProduction": false
+    },
+    "firebase": {},
+    "contentful": {
+        "spaceId": "YOUR-SPACE-ID-HERE",
+        "token": "YOUR-TOKEN-HERE"
+    }
+}
+```
+
 ### Logging
 
 ```ts
@@ -219,6 +256,12 @@ UPDATE angular.json (6817 bytes)
 UPDATE package.json (2598 bytes)
 UPDATE nx.json (401 bytes)
 UPDATE tsconfig.json (594 bytes)
+```
+
+The logging library requires the following package.
+
+```ts
+npm install -S ngx-loggly-logger@6.0.0
 ```
 
 ### Error Handling
@@ -273,6 +316,13 @@ UPDATE nx.json (443 bytes)
 UPDATE tsconfig.json (676 bytes
 ```
 
+The Firebase library requires the following packages.
+
+```ts
+npm install -S firebase@5.7.3
+npm install -S @angular/fire@5.1.1
+```
+
 ### Contentful
 
 ```ts
@@ -297,6 +347,13 @@ UPDATE angular.json (10080 bytes)
 UPDATE package.json (2598 bytes)
 UPDATE nx.json (535 bytes)
 UPDATE tsconfig.json (856 bytes)
+```
+
+Contentful requires the following package.
+
+```ts
+npm install -S contentful@7.0.4
+npm install -S marked@0.6.0
 ```
 
 ### HTTP Service
@@ -401,6 +458,302 @@ UPDATE angular.json (14414 bytes)
 UPDATE package.json (2598 bytes)
 UPDATE nx.json (712 bytes)
 UPDATE tsconfig.json (1202 bytes)
+```
+
+The rule engine has a required dependency on the following package.
+
+```ts
+npm install -S typescript-dotnet-commonjs@4.10.0
+```
+
+## Core and Shared Modules
+
+### Shared Module
+
+The `SharedModule` is provides imports for 3rd-party and common modules that are not part of the domain of the application. Many of these modules participate or require configuration. Therefore, this module is responsible for managing the configuration of the applicaton using Angular `APP_INITIALIZER` providers.
+
+```ts
+ng g module modules/shared --project=github-search-web
+CREATE apps/github-search-web/src/app/modules/shared/shared.module.ts (190 bytes)
+```
+
+> Note: Make sure to add the `SharedModule` to the import section of the `AppModule`. 
+
+
+```ts
+import { NgModule, NO_ERRORS_SCHEMA, ErrorHandler, APP_INITIALIZER } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+
+import { AngularliciousFoundationModule, HttpBaseService } from '@angularlicious/foundation';
+import { HttpClientModule } from '@angular/common/http';
+import { ErrorHandlingModule, ErrorHandliciousService } from '@angularlicious/error-handling';
+import { AngularliciousLoggingModule, AngularliciousLoggingService, ConsoleWriter, LogglyWriter } from '@angularlicious/logging';
+import { ConfigurationModule, ConfigurationService } from '@angularlicious/configuration';
+import { FirebaseModule, AuthService } from '@angularlicious/firebase';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ContentfulModule } from '@angularlicious/contentful';
+import { MaterialDesignModule } from '../material-design/material-design.module';
+
+/**
+ * Shared Layout concerns;
+ */
+// tslint:disable-next-line: nx-enforce-module-boundaries
+import { environment } from 'apps/github-search-web/src/environments/environment';
+
+/**
+ * The factory function to initialize the configuration service for the application.
+ * @param configService 
+ */
+export function initializeConfiguration(configService: ConfigurationService) {
+  console.log(`Initializing firebase configuration from [AppModule]`);
+  configService.loadConfiguration();
+  return () => {
+    return configService;
+  }
+}
+
+/**
+ * The factory function to initialize the logging service and writer for the
+ * application. 
+ * 
+ * @param loggingService 
+ * @param consoleWriter 
+ */
+export function initializeLogWriter(loggingService: AngularliciousLoggingService, consoleWriter: ConsoleWriter) {
+  console.log(`Initializing [Console Writer] from [AppModule]`);
+  return () => {
+    return consoleWriter;
+  }
+}
+
+/**
+ *  Use module to reference the common components, directives, and pipes. Use and reference
+ * this module to share common references.
+ */
+@NgModule({
+  imports: [
+    AngularliciousFoundationModule,
+    AngularliciousLoggingModule,
+    BrowserAnimationsModule,
+    ConfigurationModule.forRoot({ filePath: environment.appConfig}),
+    ContentfulModule,
+    ErrorHandlingModule,
+    FirebaseModule,
+    FormsModule,
+    MaterialDesignModule,
+    ReactiveFormsModule,
+    RouterModule
+  ],
+  declarations: [],
+  exports: [
+    ContentfulModule,
+    FormsModule,
+    HttpClientModule,
+    MaterialDesignModule,
+    ReactiveFormsModule,
+    RouterModule
+  ],
+  providers: [
+    {
+      provide: ErrorHandler,
+      useClass: ErrorHandlingModule
+    }, 
+    ConfigurationService,
+    AngularliciousLoggingService,
+    AuthService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeConfiguration,
+      deps: [ConfigurationService],
+      multi: true
+    },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeLogWriter,
+      deps: [AngularliciousLoggingService, ConsoleWriter, LogglyWriter],
+      multi: true
+    },
+  ConsoleWriter,
+  LogglyWriter,
+  {
+    provide: ErrorHandler,
+    useClass: ErrorHandliciousService,
+    deps: [ConfigurationService, AngularliciousLoggingService]
+  },
+  HttpBaseService, // Angularlicious; REQUIRED BASE FOR HTTP API COMMUNICATION TO WEB API END POINTS;
+  ],
+  schemas: [NO_ERRORS_SCHEMA]
+})
+export class SharedModule {
+}
+```
+
+### Core Module
+
+``ts
+ng g module modules/core --project=github-search-web
+CREATE apps/github-search-web/src/app/modules/core/core.module.ts (188 bytes)
+```
+
+### Material Design Module
+
+Create a module to reference the many elements of Angular Material Design (i.e., modules, components, etc.).
+
+```ts
+ng add @angular/material
+```
+
+```ts
+ng g module modules/material-design --project=github-search-web
+CREATE apps/github-search-web/src/app/modules/material-design/material-design.module.ts (198 bytes)
+```
+
+[Use the Angular Material schematic to add Material Design to the project](https://material.angular.io/guide/getting-started). The project will attempt to use:
+
+* form inputs
+* table with paginator
+* buttons
+* cards
+* progress spinners
+
+The `add` schematic wil update the `index.html` file with `stylesheet` references. 
+
+```html
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>GithubSearchWeb</title>
+  <base href="/">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+  <angularlicious-root></angularlicious-root>
+</body>
+</html>
+```
+
+The `main.ts` is updated to include a reference to `hammerjs`.
+
+```ts
+import 'hammerjs';
+```
+
+The application's `styles.scss` is updated to include Material Design style information.
+
+```css
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+```
+
+Also, `BrowserAnimationsModule` is added to the `AppModule`. 
+
+The `angular.json` project configuration is updated to include style references.
+
+```json
+"styles": [
+    "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
+    "apps/github-search-web/src/styles.scss"
+],
+```
+
+The MaterialDesignModule references all of the modules for the different elements. This provides a single point of reference for anything Material Design. The module is imported in the `SharedModule` for convenience.
+
+```ts
+​import { NgModule } from '@angular/core';
+
+import {
+  MatButtonModule,
+  MatButtonToggleModule,
+  MatSidenavModule,
+  MatToolbarModule,
+  MatIconModule,
+  MatListModule,
+  MatCardModule,
+  MatDividerModule,
+  MatTableModule,
+  MatDialogModule,
+  MatInputModule,
+  MatSelectModule,
+  MatPaginatorModule,
+  MatProgressBarModule,
+  MatProgressSpinnerModule,
+  MatSortModule,
+  MatMenuModule,
+  MatTabsModule,
+  MatFormFieldModule,
+  MatDatepickerModule,
+  MatNativeDateModule,
+  MatCheckboxModule,
+  MatRadioModule,
+  MatTooltipModule,
+  MAT_DIALOG_DEFAULT_OPTIONS
+} from '@angular/material';
+
+@NgModule({
+  imports: [
+    MatButtonModule,
+    MatButtonToggleModule,
+    MatSidenavModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatListModule,
+    MatCardModule,
+    MatDividerModule,
+    MatTableModule,
+    MatDialogModule,
+    MatInputModule,
+    MatSelectModule,
+    MatPaginatorModule,
+    MatProgressBarModule,
+    MatProgressSpinnerModule,
+    MatSortModule,
+    MatMenuModule,
+    MatTabsModule,
+    MatFormFieldModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatCheckboxModule,
+    MatRadioModule,
+    MatTooltipModule
+  ],
+  exports: [
+    MatButtonModule,
+    MatButtonToggleModule,
+    MatSidenavModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatListModule,
+    MatCardModule,
+    MatDividerModule,
+    MatTableModule,
+    MatDialogModule,
+    MatInputModule,
+    MatSelectModule,
+    MatPaginatorModule,
+    MatProgressBarModule,
+    MatProgressSpinnerModule,
+    MatSortModule,​​
+    MatMenuModule,
+    MatTabsModule,
+    MatFormFieldModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatCheckboxModule,
+    MatRadioModule,
+    MatTooltipModule
+  ], 
+  providers: [
+  ]
+})
+export class MaterialDesignModule {}
 ```
 
 ## Angular Version Information

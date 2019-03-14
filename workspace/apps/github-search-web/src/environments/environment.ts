@@ -3,8 +3,12 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  name: 'development',
+  application: 'angularlicious-github-search',
+  production: false,
+  appConfig: 'assets/config/configuration.development.json'
 };
+
 
 /*
  * For easier debugging in development mode, you can import the following file
