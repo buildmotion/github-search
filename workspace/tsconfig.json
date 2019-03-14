@@ -33,6 +33,9 @@
       ],
       "@angularlicious/http-service": [
         "libs/http-service/src/index.ts"
+      ],
+      "@angularlicious/foundation": [
+        "libs/foundation/src/index.ts"
       ]
     }
   },

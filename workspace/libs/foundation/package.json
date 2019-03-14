@@ -1,0 +1,27 @@
+{
+  "name": "@angularlicious/foundation",
+  "version": "6.0.1",
+  "peerDependencies": {
+    "@angular/common": "^7.1.1",
+    "@angular/core": "^7.1.1",
+    "@angular/http": "^7.1.1",
+    "@angularlicious/logging": "^7.0.0",
+    "@angularlicious/actions": "^7.0.0",
+    "@angularlicious/rules-engine": "^7.0.0",
+    "rxjs": "^6.2.1"
+  },
+  "description": "An Angular custom library that contains foundation elements for Angularlicious applications.",
+  "repository": {
+      "type": "git",
+      "url": "git+https://github.com/angularlicious/angularlicious.git"
+  },
+  "keywords": [
+      "angularlicious",
+      "Angular",
+      "@angularlicious",
+      "Angularlicio.us",
+      "Matt Vaughn"
+  ],
+  "author": "matt.vaughn@angularlicious.com www.angularlicio.us",
+  "license": "MIT"
+}
