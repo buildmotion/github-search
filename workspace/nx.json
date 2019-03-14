@@ -28,6 +28,9 @@
     },
     "contentful": {
       "tags": []
+    },
+    "http-service": {
+      "tags": []
     }
   }
 }

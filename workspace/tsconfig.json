@@ -30,6 +30,9 @@
       ],
       "@angularlicious/contentful": [
         "libs/contentful/src/index.ts"
+      ],
+      "@angularlicious/http-service": [
+        "libs/http-service/src/index.ts"
       ]
     }
   },

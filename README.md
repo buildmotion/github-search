@@ -9,6 +9,8 @@
     - [Logging](#logging)
     - [Error Handling](#error-handling)
     - [Firebase](#firebase)
+    - [Contentful](#contentful)
+    - [HTTP Service](#http-service)
   - [Angular Version Information](#angular-version-information)
   - [Nrwl.io Information](#nrwlio-information)
     - [Nrwl Extensions for Angular (Nx)](#nrwl-extensions-for-angular-nx)
@@ -266,6 +268,58 @@ UPDATE angular.json (7878 bytes)
 UPDATE package.json (2598 bytes)
 UPDATE nx.json (443 bytes)
 UPDATE tsconfig.json (676 bytes
+```
+
+### Contentful
+
+```ts
+ng generate library contentful --publishable --module --npm-scope=angularlicious
+? In which directory should the library be generated?
+? Which module should import the library?
+? Would you like to add a routing configuration to the library? No
+? Will this library be lazy loaded? No
+? Which tags would you like to add to the library? (used for linting)
+? Which Unit Test Runner would you like to use for the library? Karma
+CREATE libs/contentful/karma.conf.js (487 bytes)
+CREATE libs/contentful/ng-package.json (160 bytes)
+CREATE libs/contentful/package.json (187 bytes)
+CREATE libs/contentful/tsconfig.lib.json (743 bytes)
+CREATE libs/contentful/tsconfig.spec.json (262 bytes)
+CREATE libs/contentful/tslint.json (269 bytes)
+CREATE libs/contentful/src/test.ts (700 bytes)
+CREATE libs/contentful/src/index.ts (58 bytes)
+CREATE libs/contentful/src/lib/contentful.module.ts (255 bytes)
+CREATE libs/contentful/src/lib/contentful.module.spec.ts (446 bytes)
+UPDATE angular.json (10080 bytes)
+UPDATE package.json (2598 bytes)
+UPDATE nx.json (535 bytes)
+UPDATE tsconfig.json (856 bytes)
+```
+
+### HTTP Service
+
+```ts
+ng generate library http-service --publishable --module --npm-scope=angularlicious
+? In which directory should the library be generated?
+? Which module should import the library?
+? Would you like to add a routing configuration to the library? No
+? Will this library be lazy loaded? No
+? Which tags would you like to add to the library? (used for linting)
+? Which Unit Test Runner would you like to use for the library? Karma
+CREATE libs/http-service/karma.conf.js (489 bytes)
+CREATE libs/http-service/ng-package.json (162 bytes)
+CREATE libs/http-service/package.json (189 bytes)
+CREATE libs/http-service/tsconfig.lib.json (745 bytes)
+CREATE libs/http-service/tsconfig.spec.json (264 bytes)
+CREATE libs/http-service/tslint.json (269 bytes)
+CREATE libs/http-service/src/test.ts (700 bytes)
+CREATE libs/http-service/src/index.ts (60 bytes)
+CREATE libs/http-service/src/lib/http-service.module.ts (256 bytes)
+CREATE libs/http-service/src/lib/http-service.module.spec.ts (452 bytes)
+UPDATE angular.json (11181 bytes)
+UPDATE package.json (2598 bytes)
+UPDATE nx.json (581 bytes)
+UPDATE tsconfig.json (946 bytes)
 ```
 
 ## Angular Version Information
