@@ -16,6 +16,9 @@
     },
     "configuration": {
       "tags": []
+    },
+    "logging": {
+      "tags": []
     }
   }
 }

@@ -4,6 +4,10 @@
   - [Requirements](#requirements)
   - [Application Setup](#application-setup)
   - [Add Web Project](#add-web-project)
+  - [Library Projects](#library-projects)
+    - [Configuration](#configuration)
+    - [Logging](#logging)
+    - [Error Handling](#error-handling)
   - [Angular Version Information](#angular-version-information)
   - [Nrwl.io Information](#nrwlio-information)
     - [Nrwl Extensions for Angular (Nx)](#nrwl-extensions-for-angular-nx)
@@ -132,6 +136,79 @@ to launch the application.
 }
 ```
 
+
+
+## Library Projects
+
+Create a set of library projects for cross-cutting concerns. Use the `--npm-scope` switch to scope all of the 
+library projects to `angularlicious`. 
+
+```ts
+ng generate library configuration --publishable --module --npm-scope=angularlicious
+ng generate library logging --publishable --module --npm-scope=angularlicious
+```
+
+### Configuration
+
+Create a new library project to manage the configuration for the application. There will be other libraries and 
+features that will require configuration. 
+
+* error handling
+* logging
+* firebase
+* content
+
+```ts
+ng generate library configuration --publishable --module --npm-scope=angularlicious
+? In which directory should the library be generated?
+? Which module should import the library?
+? Would you like to add a routing configuration to the library? No
+? Will this library be lazy loaded? No
+? Which tags would you like to add to the library? (used for linting)
+? Which Unit Test Runner would you like to use for the library? Karma
+CREATE libs/configuration/karma.conf.js (490 bytes)
+CREATE libs/configuration/ng-package.json (163 bytes)
+CREATE libs/configuration/package.json (190 bytes)
+CREATE libs/configuration/tsconfig.lib.json (746 bytes)
+CREATE libs/configuration/tsconfig.spec.json (265 bytes)
+CREATE libs/configuration/tslint.json (269 bytes)
+CREATE libs/configuration/src/test.ts (700 bytes)
+CREATE libs/configuration/src/index.ts (61 bytes)
+CREATE libs/configuration/src/lib/configuration.module.ts (258 bytes)
+CREATE libs/configuration/src/lib/configuration.module.spec.ts (461 bytes)
+UPDATE angular.json (5766 bytes)
+UPDATE package.json (2598 bytes)
+UPDATE nx.json (360 bytes)
+UPDATE tsconfig.json (514 bytes)
+```
+
+### Logging
+
+```ts
+ng generate library logging --publishable --module --npm-scope=angularlicious
+? In which directory should the library be generated?
+? Which module should import the library?
+? Would you like to add a routing configuration to the library? No
+? Will this library be lazy loaded? No
+? Which tags would you like to add to the library? (used for linting)
+? Which Unit Test Runner would you like to use for the library? Karma
+CREATE libs/logging/karma.conf.js (484 bytes)
+CREATE libs/logging/ng-package.json (157 bytes)
+CREATE libs/logging/package.json (184 bytes)
+CREATE libs/logging/tsconfig.lib.json (740 bytes)
+CREATE libs/logging/tsconfig.spec.json (259 bytes)
+CREATE libs/logging/tslint.json (269 bytes)
+CREATE libs/logging/src/test.ts (700 bytes)
+CREATE libs/logging/src/index.ts (55 bytes)
+CREATE libs/logging/src/lib/logging.module.ts (252 bytes)
+CREATE libs/logging/src/lib/logging.module.spec.ts (431 bytes)
+UPDATE angular.json (6817 bytes)
+UPDATE package.json (2598 bytes)
+UPDATE nx.json (401 bytes)
+UPDATE tsconfig.json (594 bytes)
+```
+
+### Error Handling
 
 ## Angular Version Information
 The following shows the version of Angular used for the project. 

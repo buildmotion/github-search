@@ -18,6 +18,9 @@
     "paths": {
       "@angularlicious/configuration": [
         "libs/configuration/src/index.ts"
+      ],
+      "@angularlicious/logging": [
+        "libs/logging/src/index.ts"
       ]
     }
   },
