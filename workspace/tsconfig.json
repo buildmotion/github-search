@@ -24,6 +24,9 @@
       ],
       "@angularlicious/firebase": [
         "libs/firebase/src/index.ts"
+      ],
+      "@angularlicious/error-handling": [
+        "libs/error-handling/src/index.ts"
       ]
     }
   },

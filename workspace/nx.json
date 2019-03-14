@@ -22,6 +22,9 @@
     },
     "firebase": {
       "tags": []
+    },
+    "error-handling": {
+      "tags": []
     }
   }
 }

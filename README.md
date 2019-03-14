@@ -149,6 +149,11 @@ ng generate library configuration --publishable --module --npm-scope=angularlici
 ng generate library logging --publishable --module --npm-scope=angularlicious
 ng generate library errorHandling --publishable --module --npm-scope=angularlicious
 ng generate library firebase --publishable --module --npm-scope=angularlicious
+ng generate library contentful --publishable --module --npm-scope=angularlicious
+ng generate library http-service --publishable --module --npm-scope=angularlicious
+ng generate library foundation --publishable --module --npm-scope=angularlicious
+ng generate library actions --publishable --module --npm-scope=angularlicious
+ng generate library rules-engine --publishable --module --npm-scope=angularlicious
 ```
 
 ### Configuration
@@ -212,6 +217,30 @@ UPDATE tsconfig.json (594 bytes)
 ```
 
 ### Error Handling
+
+```ts
+ng generate library errorHandling --publishable --module --npm-scope=angularlicious
+? In which directory should the library be generated?
+? Which module should import the library?
+? Would you like to add a routing configuration to the library? No
+? Will this library be lazy loaded? No
+? Which tags would you like to add to the library? (used for linting)
+? Which Unit Test Runner would you like to use for the library? Karma
+CREATE libs/error-handling/karma.conf.js (491 bytes)
+CREATE libs/error-handling/ng-package.json (164 bytes)
+CREATE libs/error-handling/package.json (191 bytes)
+CREATE libs/error-handling/tsconfig.lib.json (747 bytes)
+CREATE libs/error-handling/tsconfig.spec.json (266 bytes)
+CREATE libs/error-handling/tslint.json (269 bytes)
+CREATE libs/error-handling/src/test.ts (700 bytes)
+CREATE libs/error-handling/src/index.ts (62 bytes)
+CREATE libs/error-handling/src/lib/error-handling.module.ts (258 bytes)
+CREATE libs/error-handling/src/lib/error-handling.module.spec.ts (462 bytes)
+UPDATE angular.json (8999 bytes)
+UPDATE package.json (2598 bytes)
+UPDATE nx.json (491 bytes)
+UPDATE tsconfig.json (770 bytes)
+```
 
 ### Firebase
 
