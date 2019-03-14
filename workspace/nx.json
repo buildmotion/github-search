@@ -19,6 +19,9 @@
     },
     "logging": {
       "tags": []
+    },
+    "firebase": {
+      "tags": []
     }
   }
 }

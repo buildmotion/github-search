@@ -21,6 +21,9 @@
       ],
       "@angularlicious/logging": [
         "libs/logging/src/index.ts"
+      ],
+      "@angularlicious/firebase": [
+        "libs/firebase/src/index.ts"
       ]
     }
   },

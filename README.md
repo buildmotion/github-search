@@ -8,6 +8,7 @@
     - [Configuration](#configuration)
     - [Logging](#logging)
     - [Error Handling](#error-handling)
+    - [Firebase](#firebase)
   - [Angular Version Information](#angular-version-information)
   - [Nrwl.io Information](#nrwlio-information)
     - [Nrwl Extensions for Angular (Nx)](#nrwl-extensions-for-angular-nx)
@@ -146,6 +147,8 @@ library projects to `angularlicious`.
 ```ts
 ng generate library configuration --publishable --module --npm-scope=angularlicious
 ng generate library logging --publishable --module --npm-scope=angularlicious
+ng generate library errorHandling --publishable --module --npm-scope=angularlicious
+ng generate library firebase --publishable --module --npm-scope=angularlicious
 ```
 
 ### Configuration
@@ -209,6 +212,32 @@ UPDATE tsconfig.json (594 bytes)
 ```
 
 ### Error Handling
+
+### Firebase
+
+```ts
+ ng generate library firebase --publishable --module --npm-scope=angularlicious
+? In which directory should the library be generated?
+? Which module should import the library?
+? Would you like to add a routing configuration to the library? No
+? Will this library be lazy loaded? No
+? Which tags would you like to add to the library? (used for linting)
+? Which Unit Test Runner would you like to use for the library? Karma
+CREATE libs/firebase/karma.conf.js (485 bytes)
+CREATE libs/firebase/ng-package.json (158 bytes)
+CREATE libs/firebase/package.json (185 bytes)
+CREATE libs/firebase/tsconfig.lib.json (741 bytes)
+CREATE libs/firebase/tsconfig.spec.json (260 bytes)
+CREATE libs/firebase/tslint.json (269 bytes)
+CREATE libs/firebase/src/test.ts (700 bytes)
+CREATE libs/firebase/src/index.ts (56 bytes)
+CREATE libs/firebase/src/lib/firebase.module.ts (253 bytes)
+CREATE libs/firebase/src/lib/firebase.module.spec.ts (436 bytes)
+UPDATE angular.json (7878 bytes)
+UPDATE package.json (2598 bytes)
+UPDATE nx.json (443 bytes)
+UPDATE tsconfig.json (676 bytes
+```
 
 ## Angular Version Information
 The following shows the version of Angular used for the project. 
