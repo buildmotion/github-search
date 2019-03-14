@@ -3,6 +3,7 @@
 - [Angularlicious GitHub Search](#angularlicious-github-search)
   - [Requirements](#requirements)
   - [Application Setup](#application-setup)
+  - [Add Web Project](#add-web-project)
   - [Angular Version Information](#angular-version-information)
   - [Nrwl.io Information](#nrwlio-information)
     - [Nrwl Extensions for Angular (Nx)](#nrwl-extensions-for-angular-nx)
@@ -64,6 +65,44 @@ CREATE workspace/apps/.gitkeep (1 bytes)
 CREATE workspace/libs/.gitkeep (0 bytes)
 CREATE workspace/tools/tsconfig.tools.json (254 bytes)
 CREATE workspace/tools/schematics/.gitkeep (0 bytes)
+```
+
+## Add Web Project
+
+Create a new web project to implement the GitHub Search UI features.
+
+```ts
+ng generate application github-search-web --routing --style=scss --dry-run
+? In which directory should the application be generated?
+? Which Unit Test Runner would you like to use for the application? Karma [ https://karma-runner.github.io ]
+? Which E2E Test Runner would you like to use for the application? Protractor [ https://www.protractortest.org ]
+? Which tags would you like to add to the application? (used for linting)
+CREATE apps/github-search-web-e2e/protractor.conf.js (752 bytes)
+CREATE apps/github-search-web-e2e/tsconfig.e2e.json (248 bytes)
+CREATE apps/github-search-web-e2e/src/app.e2e-spec.ts (313 bytes)
+CREATE apps/github-search-web-e2e/src/app.po.ts (219 bytes)
+CREATE apps/github-search-web/browserslist (388 bytes)
+CREATE apps/github-search-web/karma.conf.js (494 bytes)
+CREATE apps/github-search-web/tsconfig.app.json (230 bytes)
+CREATE apps/github-search-web/tsconfig.spec.json (293 bytes)
+CREATE apps/github-search-web/tslint.json (269 bytes)
+CREATE apps/github-search-web/src/favicon.ico (5430 bytes)
+CREATE apps/github-search-web/src/index.html (324 bytes)
+CREATE apps/github-search-web/src/main.ts (372 bytes)
+CREATE apps/github-search-web/src/polyfills.ts (3234 bytes)
+CREATE apps/github-search-web/src/test.ts (642 bytes)
+CREATE apps/github-search-web/src/styles.scss (80 bytes)
+CREATE apps/github-search-web/src/assets/.gitkeep (0 bytes)
+CREATE apps/github-search-web/src/environments/environment.prod.ts (51 bytes)
+CREATE apps/github-search-web/src/environments/environment.ts (662 bytes)
+CREATE apps/github-search-web/src/app/app.module.ts (485 bytes)
+CREATE apps/github-search-web/src/app/app.component.html (602 bytes)
+CREATE apps/github-search-web/src/app/app.component.spec.ts (1106 bytes)
+CREATE apps/github-search-web/src/app/app.component.ts (233 bytes)
+CREATE apps/github-search-web/src/app/app.component.scss (0 bytes)
+UPDATE angular.json (4655 bytes)
+UPDATE package.json (2469 bytes)
+UPDATE nx.json (313 bytes)
 ```
 
 ## Angular Version Information

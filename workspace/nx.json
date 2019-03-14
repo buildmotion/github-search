@@ -7,5 +7,12 @@
     "tslint.json": "*",
     "nx.json": "*"
   },
-  "projects": {}
+  "projects": {
+    "github-search-web": {
+      "tags": []
+    },
+    "github-search-web-e2e": {
+      "tags": []
+    }
+  }
 }
