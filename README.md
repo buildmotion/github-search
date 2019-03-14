@@ -105,6 +105,34 @@ UPDATE package.json (2469 bytes)
 UPDATE nx.json (313 bytes)
 ```
 
+Verify the new web project can build and run. 
+
+```ts
+ng serve
+```
+
+Add a  `launch.json` configuration for the project. Update the port of the localhost to use: `4200`. Run the debugger
+to launch the application. 
+
+```json
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Launch localhost",
+            "url": "http://localhost:4200",
+            "webRoot": "${workspaceFolder}"
+        }
+    ]
+}
+```
+
+
 ## Angular Version Information
 The following shows the version of Angular used for the project. 
 
@@ -119,21 +147,29 @@ ng v
                 |___/
     
 
-Angular CLI: 7.3.4
-Node: 11.10.0
+Angular CLI: 7.0.1
+Node: 10.0.0
 OS: win32 x64
-Angular:
-...
+Angular: 7.2.9
+... animations, common, compiler, compiler-cli, core, forms
+... language-service, platform-browser, platform-browser-dynamic
+... router
 
-Package                      Version
-------------------------------------------------------
-@angular-devkit/architect    0.13.4
-@angular-devkit/core         7.3.4
-@angular-devkit/schematics   7.3.4
-@schematics/angular          7.3.4
-@schematics/update           0.13.4
-rxjs                         6.3.3
-typescript                   3.2.4
+Package                           Version
+-----------------------------------------------------------
+@angular-devkit/architect         0.10.7
+@angular-devkit/build-angular     0.10.7
+@angular-devkit/build-optimizer   0.10.7
+@angular-devkit/build-webpack     0.10.7
+@angular-devkit/core              7.0.7
+@angular-devkit/schematics        7.0.1
+@angular/cli                      7.0.1
+@ngtools/webpack                  7.0.7
+@schematics/angular               7.0.1
+@schematics/update                0.10.1
+rxjs                              6.3.3
+typescript                        3.1.6
+webpack                           4.19.1
 ```
 
 ## Nrwl.io Information
