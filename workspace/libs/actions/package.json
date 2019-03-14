@@ -1,0 +1,27 @@
+{
+  "name": "@angularlicious/actions",
+  "version": "7.0.0",
+  "description": "@angularlicious/actions is a framework to build amazing business logic. It compliments the @angularlicious/rules-engine.",
+  "license": "MIT",
+  "keywords": [
+    "angular",
+    "typescript",
+    "business logic",
+    "business actions",
+    "business rules",
+    "angularlicious",
+    "validation",
+    "javascript rules",
+    "Matt Vaughn",
+    "Angularlicious.com",
+    "Angularlicious"
+  ],
+  "author": "matt.vaughn@angularlicious.com www.angularlicio.us",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/angularlicious/angularlicious.git"
+  },
+  "peerDependencies": {
+    "@angularlicious/rules-engine": "^7.0.0"
+  }
+}

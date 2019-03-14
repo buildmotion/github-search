@@ -11,6 +11,8 @@
     - [Firebase](#firebase)
     - [Contentful](#contentful)
     - [HTTP Service](#http-service)
+    - [Foundation](#foundation)
+    - [Business Actions](#business-actions)
   - [Angular Version Information](#angular-version-information)
   - [Nrwl.io Information](#nrwlio-information)
     - [Nrwl Extensions for Angular (Nx)](#nrwl-extensions-for-angular-nx)
@@ -320,6 +322,57 @@ UPDATE angular.json (11181 bytes)
 UPDATE package.json (2598 bytes)
 UPDATE nx.json (581 bytes)
 UPDATE tsconfig.json (946 bytes)
+```
+
+### Foundation
+
+```ts
+ng generate library foundation --publishable --module --npm-scope=angularlicious
+? In which directory should the library be generated?
+? Which module should import the library?
+? Would you like to add a routing configuration to the library? No
+? Will this library be lazy loaded? No
+? Which tags would you like to add to the library? (used for linting)
+? Which Unit Test Runner would you like to use for the library? Karma
+CREATE libs/foundation/karma.conf.js (487 bytes)
+CREATE libs/foundation/ng-package.json (160 bytes)
+CREATE libs/foundation/package.json (187 bytes)
+CREATE libs/foundation/tsconfig.lib.json (743 bytes)
+CREATE libs/foundation/tsconfig.spec.json (262 bytes)
+CREATE libs/foundation/tslint.json (269 bytes)
+CREATE libs/foundation/src/test.ts (700 bytes)
+CREATE libs/foundation/src/index.ts (58 bytes)
+CREATE libs/foundation/src/lib/foundation.module.ts (255 bytes)
+CREATE libs/foundation/src/lib/foundation.module.spec.ts (446 bytes)
+UPDATE angular.json (12262 bytes)
+UPDATE package.json (2598 bytes)
+UPDATE nx.json (625 bytes)
+UPDATE tsconfig.json (1032 bytes)
+```
+### Business Actions
+
+```ts
+ng generate library actions --publishable --module --npm-scope=angularlicious
+? In which directory should the library be generated?
+? Which module should import the library?
+? Would you like to add a routing configuration to the library? No
+? Will this library be lazy loaded? No
+? Which tags would you like to add to the library? (used for linting)
+? Which Unit Test Runner would you like to use for the library? Karma
+CREATE libs/actions/karma.conf.js (484 bytes)
+CREATE libs/actions/ng-package.json (157 bytes)
+CREATE libs/actions/package.json (184 bytes)
+CREATE libs/actions/tsconfig.lib.json (740 bytes)
+CREATE libs/actions/tsconfig.spec.json (259 bytes)
+CREATE libs/actions/tslint.json (269 bytes)
+CREATE libs/actions/src/test.ts (700 bytes)
+CREATE libs/actions/src/index.ts (55 bytes)
+CREATE libs/actions/src/lib/actions.module.ts (252 bytes)
+CREATE libs/actions/src/lib/actions.module.spec.ts (431 bytes)
+UPDATE angular.json (13313 bytes)
+UPDATE package.json (2598 bytes)
+UPDATE nx.json (666 bytes)
+UPDATE tsconfig.json (1112 bytes)
 ```
 
 ## Angular Version Information

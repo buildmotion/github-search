@@ -34,6 +34,9 @@
     },
     "foundation": {
       "tags": []
+    },
+    "actions": {
+      "tags": []
     }
   }
 }

@@ -36,6 +36,9 @@
       ],
       "@angularlicious/foundation": [
         "libs/foundation/src/index.ts"
+      ],
+      "@angularlicious/actions": [
+        "libs/actions/src/index.ts"
       ]
     }
   },
