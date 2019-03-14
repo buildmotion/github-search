@@ -16,6 +16,9 @@
     ],
     "baseUrl": ".",
     "paths": {
+      "@angularlicious/configuration": [
+        "libs/configuration/src/index.ts"
+      ]
     }
   },
   "exclude": [

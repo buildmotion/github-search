@@ -13,6 +13,9 @@
     },
     "github-search-web-e2e": {
       "tags": []
+    },
+    "configuration": {
+      "tags": []
     }
   }
 }
