@@ -25,6 +25,9 @@
     },
     "error-handling": {
       "tags": []
+    },
+    "contentful": {
+      "tags": []
     }
   }
 }

@@ -273,6 +273,41 @@
           }
         }
       }
+    },
+    "contentful": {
+      "root": "libs/contentful",
+      "sourceRoot": "libs/contentful/src",
+      "projectType": "library",
+      "prefix": "angularlicious",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "libs/contentful/tsconfig.lib.json",
+            "project": "libs/contentful/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "libs/contentful/src/test.ts",
+            "tsConfig": "libs/contentful/tsconfig.spec.json",
+            "karmaConfig": "libs/contentful/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/contentful/tsconfig.lib.json",
+              "libs/contentful/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
   "cli": {

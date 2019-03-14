@@ -27,6 +27,9 @@
       ],
       "@angularlicious/error-handling": [
         "libs/error-handling/src/index.ts"
+      ],
+      "@angularlicious/contentful": [
+        "libs/contentful/src/index.ts"
       ]
     }
   },
