@@ -1,0 +1,28 @@
+{
+  "name": "@angularlicious/rules-engine",
+  "version": "7.0.0",
+  "description": "A serious rule engine for Javascript applications. Perfect for Angular applications. Build something amazing!",
+  "license": "MIT",
+  "keywords": [
+    "angular",
+    "typescript",
+    "typescript rules engine",
+    "validation",
+    "rules engine",
+    "business rules",
+    "rules",
+    "angularlicious",
+    "@angularlicious",
+    "Matt Vaughn",
+    "Angularlicious.com",
+    "Angularlicio.us"
+  ],
+  "author": "matt.vaughn@angularlicious.com www.angularlicio.us",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/angularlicious/angularlicious.git"
+  },
+  "peerDependencies": {
+    "typescript-dotnet-commonjs": "~4.10.0"
+  }
+}

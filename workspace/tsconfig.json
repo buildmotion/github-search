@@ -39,6 +39,9 @@
       ],
       "@angularlicious/actions": [
         "libs/actions/src/index.ts"
+      ],
+      "@angularlicious/rules-engine": [
+        "libs/rules-engine/src/index.ts"
       ]
     }
   },

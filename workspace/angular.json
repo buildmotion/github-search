@@ -413,6 +413,41 @@
           }
         }
       }
+    },
+    "rules-engine": {
+      "root": "libs/rules-engine",
+      "sourceRoot": "libs/rules-engine/src",
+      "projectType": "library",
+      "prefix": "angularlicious",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "libs/rules-engine/tsconfig.lib.json",
+            "project": "libs/rules-engine/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "libs/rules-engine/src/test.ts",
+            "tsConfig": "libs/rules-engine/tsconfig.spec.json",
+            "karmaConfig": "libs/rules-engine/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/rules-engine/tsconfig.lib.json",
+              "libs/rules-engine/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
   "cli": {

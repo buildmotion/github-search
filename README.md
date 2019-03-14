@@ -13,6 +13,7 @@
     - [HTTP Service](#http-service)
     - [Foundation](#foundation)
     - [Business Actions](#business-actions)
+    - [Rules Engine](#rules-engine)
   - [Angular Version Information](#angular-version-information)
   - [Nrwl.io Information](#nrwlio-information)
     - [Nrwl Extensions for Angular (Nx)](#nrwl-extensions-for-angular-nx)
@@ -349,6 +350,7 @@ UPDATE package.json (2598 bytes)
 UPDATE nx.json (625 bytes)
 UPDATE tsconfig.json (1032 bytes)
 ```
+
 ### Business Actions
 
 ```ts
@@ -373,6 +375,32 @@ UPDATE angular.json (13313 bytes)
 UPDATE package.json (2598 bytes)
 UPDATE nx.json (666 bytes)
 UPDATE tsconfig.json (1112 bytes)
+```
+
+### Rules Engine
+
+```ts
+ng generate library rules-engine --publishable --module --npm-scope=angularlicious
+? In which directory should the library be generated?
+? Which module should import the library?
+? Would you like to add a routing configuration to the library? No
+? Will this library be lazy loaded? No
+? Which tags would you like to add to the library? (used for linting)
+? Which Unit Test Runner would you like to use for the library? Karma
+CREATE libs/rules-engine/karma.conf.js (489 bytes)
+CREATE libs/rules-engine/ng-package.json (162 bytes)
+CREATE libs/rules-engine/package.json (189 bytes)
+CREATE libs/rules-engine/tsconfig.lib.json (745 bytes)
+CREATE libs/rules-engine/tsconfig.spec.json (264 bytes)
+CREATE libs/rules-engine/tslint.json (269 bytes)
+CREATE libs/rules-engine/src/test.ts (700 bytes)
+CREATE libs/rules-engine/src/index.ts (60 bytes)
+CREATE libs/rules-engine/src/lib/rules-engine.module.ts (256 bytes)
+CREATE libs/rules-engine/src/lib/rules-engine.module.spec.ts (452 bytes)
+UPDATE angular.json (14414 bytes)
+UPDATE package.json (2598 bytes)
+UPDATE nx.json (712 bytes)
+UPDATE tsconfig.json (1202 bytes)
 ```
 
 ## Angular Version Information

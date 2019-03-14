@@ -37,6 +37,9 @@
     },
     "actions": {
       "tags": []
+    },
+    "rules-engine": {
+      "tags": []
     }
   }
 }
