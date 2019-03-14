@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, } from '@angular/common';
-import { BrowserModule  } from '@angular/platform-browser';
+import { BrowserModule } from '@angular/platform-browser';
 import { Routes, RouterModule } from '@angular/router';
 import { SearchComponent } from '../../layouts/search-layout/search/search.component';
 
-const routes: Routes =[
+const routes: Routes = [
   {
     path: '',
     redirectTo: 'dashboard',
@@ -12,11 +12,12 @@ const routes: Routes =[
   }, {
     path: '',
     component: SearchComponent,
-    children: [
-        {
-      path: '',
-      loadChildren: './layouts/search-layout/search-layout.module#SearchLayoutModule'
-  }]}
+    // children: [
+    //   {
+    //     path: '',
+    //     loadChildren: './../../layouts/search-layout/search-layout.module#SearchLayoutModule'
+    //   }]
+  }
 ];
 
 @NgModule({

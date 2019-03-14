@@ -13,12 +13,13 @@ import { AppRoutingModule } from './modules/app-routing/app-routing.module';
   declarations: [AppComponent],
   imports: [
     BrowserModule,
-    CoreModule,
     NxModule.forRoot(),
-    RouterModule.forRoot([], { initialNavigation: 'enabled' }),
+    // RouterModule.forRoot([], { initialNavigation: 'enabled' }),
+    RouterModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    SharedModule
+    SharedModule,
+    CoreModule
   ],
   providers: [],
   bootstrap: [AppComponent]

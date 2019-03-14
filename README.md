@@ -22,6 +22,7 @@
     - [Routing](#routing)
     - [Site Module](#site-module)
     - [Search Layout Module](#search-layout-module)
+    - [Styles](#styles)
   - [Angular Version Information](#angular-version-information)
   - [Nrwl.io Information](#nrwlio-information)
     - [Nrwl Extensions for Angular (Nx)](#nrwl-extensions-for-angular-nx)
@@ -922,6 +923,8 @@ CREATE apps/github-search-web/src/app/layouts/search-layout/search-layout-routin
 CREATE apps/github-search-web/src/app/layouts/search-layout/search-layout.module.ts (304 bytes)
 ```
 
+> Note: Import the `SearchLayoutModule` into the application `CoreModule`.
+
 Add the target component.
 
 ```ts
@@ -951,11 +954,7 @@ const routes: Routes =[
   }, {
     path: '',
     component: SearchComponent,
-    children: [
-        {
-      path: '',
-      loadChildren: './layouts/search-layout/search-layout.module#SearchLayoutModule'
-  }]}
+   }
 ];
 
 @NgModule({
@@ -969,6 +968,47 @@ const routes: Routes =[
 })
 export class AppRoutingModule { }
 ```
+
+Update the `AppModule` to allow the routes to be loaded. 
+
+>Note: the `CoreModule` was moved to the last entry in the `imports` list.
+
+```ts
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+
+import { AppComponent } from './app.component';
+import { NxModule } from '@nrwl/nx';
+import { RouterModule } from '@angular/router';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { SharedModule } from './modules/shared/shared.module';
+import { CoreModule } from './modules/core/core.module';
+import { AppRoutingModule } from './modules/app-routing/app-routing.module';
+
+@NgModule({
+  declarations: [AppComponent],
+  imports: [
+    BrowserModule,
+    NxModule.forRoot(),
+    // RouterModule.forRoot([], { initialNavigation: 'enabled' }),
+    RouterModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    SharedModule,
+    CoreModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule {}
+
+```
+
+### Styles
+
+Need to add resources and assets to the application project.
+
+> //TODO: Copy the contents (css, img, and scss folders) of the template's `asset` folder to the *asset* folder of the application project.
 
 ## Angular Version Information
 The following shows the version of Angular used for the project. 

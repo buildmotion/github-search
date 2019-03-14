@@ -1,14 +1,19 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { SearchLayoutRoutingModule } from './search-layout-routing.module';
 import { SearchComponent } from './search/search.component';
+import { RouterModule } from '@angular/router';
+
+import { SearchRoutes } from './search-layout-routing.module';
 
 @NgModule({
   imports: [
     CommonModule,
-    SearchLayoutRoutingModule
+    RouterModule.forChild(SearchRoutes),
   ],
-  declarations: [SearchComponent]
+  declarations: [SearchComponent],
+  exports: [
+    SearchComponent
+  ]
 })
 export class SearchLayoutModule { }

@@ -15,6 +15,7 @@ import { CommonModule } from '@angular/common';
  */
 import { SiteModule } from './../site/site.module';
 import { SharedModule } from '../shared/shared.module';
+import { SearchLayoutModule } from '../../layouts/search-layout/search-layout.module';
 
 /** SERVICES:
  * Import the [service] and add to the [providers] list. This will make 
@@ -34,6 +35,7 @@ import { SharedModule } from '../shared/shared.module';
 @NgModule({
   imports: [
     CommonModule,
+    SearchLayoutModule,
     SharedModule,
     SiteModule
   ],
