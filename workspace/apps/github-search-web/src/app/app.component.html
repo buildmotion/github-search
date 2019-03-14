@@ -1,2 +1,16 @@
-
-<router-outlet></router-outlet>
+<div class="wrapper">
+    <div class="sidebar" data-color="danger" data-background-color="white" data-image="./assets/img/sidebar-1.jpg">
+        <angularlicious-sidebar></angularlicious-sidebar>
+        <div class="sidebar-background" style="background-image: url(./assets/img/sidebar-4.jpg)"></div>
+    </div>
+    <div class="main-panel">
+        <angularlicious-navbar></angularlicious-navbar>
+        <router-outlet></router-outlet>
+        <angularlicious-footer></angularlicious-footer>
+  
+        <!-- <div *ngIf="isMaps('maps')">
+            <angularlicious-footer></angularlicious-footer>
+        </div> -->
+    </div>
+  </div>
+  

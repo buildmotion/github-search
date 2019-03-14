@@ -19,7 +19,7 @@ import { AppRoutingModule } from './modules/app-routing/app-routing.module';
     AppRoutingModule,
     BrowserAnimationsModule,
     SharedModule,
-    CoreModule
+    CoreModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

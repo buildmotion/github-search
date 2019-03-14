@@ -41,6 +41,7 @@ import { SearchLayoutModule } from '../../layouts/search-layout/search-layout.mo
   ],
   declarations: [],
   exports: [
+    SearchLayoutModule,
     SharedModule,
     SiteModule
   ],

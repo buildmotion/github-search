@@ -1010,6 +1010,47 @@ Need to add resources and assets to the application project.
 
 > //TODO: Copy the contents (css, img, and scss folders) of the template's `asset` folder to the *asset* folder of the application project.
 
+```ts
+npm install -S perfect-scrollbar@1.1.0
+npm install -S jquery@3.2.1
+npm install -S popper.js@1.14.3
+npm install -S bootstrap-material-design@4.1.1
+npm install -S arrive@2.4.1
+npm install -S moment@2.22.1
+npm install -S bootstrap-notify@3.1.3
+npm install -S chartist@0.11.0
+npm install -S bootstrap@4.1.0
+npm install -S @ng-bootstrap/ng-bootstrap
+```
+
+Use the template's `angular.json` configuration for the current app.
+
+> Update the assets, styles, and scripts. You may need to modify the paths.
+
+```json
+"assets": [
+  "apps/github-search-web/src/favicon.ico",
+  "apps/github-search-web/src/assets"
+],
+"styles": [
+  "./node_modules/perfect-scrollbar/css/perfect-scrollbar.css",
+  "apps/github-search-web/src/assets/scss/material-dashboard.scss",
+  "apps/github-search-web/src/assets/css/demo.css",
+  "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
+  "apps/github-search-web/src/styles.scss"
+],
+"scripts": [
+  "node_modules/jquery/dist/jquery.js",
+  "node_modules/popper.js/dist/umd/popper.js",
+  "node_modules/bootstrap-material-design/dist/js/bootstrap-material-design.min.js",
+  "node_modules/arrive/src/arrive.js",
+  "node_modules/moment/moment.js",
+  "node_modules/perfect-scrollbar/dist/perfect-scrollbar.min.js",
+  "node_modules/bootstrap-notify/bootstrap-notify.js",
+  "node_modules/chartist/dist/chartist.js"
+]
+```
+
 ## Angular Version Information
 The following shows the version of Angular used for the project. 
 
