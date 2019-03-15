@@ -18,6 +18,7 @@ import { Severity } from '@angularlicious/logging';
 import { AngularliciousLoggingService } from '@angularlicious/logging';
 import { ErrorResponse } from './models/error-response.model';
 import { ServiceResponse } from './models/service-response.model';
+import { GithubUser } from 'apps/github-search-web/src/app/services/github-search/models/github-user.model';
 
 /**
  * Use to create and execute HTTP service requests.
@@ -35,7 +36,7 @@ export class HttpBaseService {
   constructor(
     public http: HttpClient,
     public loggingService: AngularliciousLoggingService
-  ) {}
+  ) { }
 
   /**
    * Use to create a [Header] for [multipart/form-data].
@@ -87,6 +88,20 @@ export class HttpBaseService {
     return headers;
   }
 
+  createGithubHeader(requiresAuthToken: boolean) {
+    this.loggingService.log(
+      this.serviceName,
+      Severity.Information,
+      `Preparing to create header for the HTTP request. RequiresAuthToken: ${requiresAuthToken}.`
+    );
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    if (requiresAuthToken) {
+      headers.append('Authorization', `Bearer ${this.accessToken}`);
+    }
+    headers.append('Accept', 'application/vnd.github.v3+json')
+    return headers;
+  }
+
   /**
    * Use this method to create a new HttpRequestOptions item for a request.
    * @param headers Use to supply header information in the request.
@@ -131,25 +146,44 @@ export class HttpBaseService {
     );
   }
 
+  finish(message: string) {
+    this.loggingService.log(this.serviceName, Severity.Information, message);
+  }
+
   /**
    * Use to execute an HTTP [get] request using the specified url and options.
    */
-  get<ServiceResponse>(requestOptions: HttpRequestOptions): Observable<ServiceResponse> 
-  {
+  get(requestOptions: HttpRequestOptions): Observable<any> {
     requestOptions.requestMethod = HttpRequestMethod.get;
     return this.http
-      .get<ServiceResponse>(requestOptions.requestUrl, requestOptions)
-      .pipe(
-        // catchError(error => this.handleHttpError(error, requestOptions))
-      )
+      .get(requestOptions.requestUrl, requestOptions)
+      .pipe()
+      .catch(
+        error => this.handleHttpError(error, requestOptions)
+      );
+  }
+
+  /**
+   * Use to handle the response from an API request. It provides a wrapper around 
+   * the payload and returns the item as an Observable for the consumer component.
+   * @param payload 
+   */
+  handleSuccess(payload: any) {
+    if (payload) {
+      const response = new ServiceResponse();
+      response.IsSuccess = true;
+      response.Message = `Successfully processed request.`;
+      response.Data = payload;
+      const subject: BehaviorSubject<any> = new BehaviorSubject(response);
+      return subject.asObservable();
+    }
   }
 
   /**
    * Use to execute an HTTP [post] request using the specified url and options.
    * @param requestOptions use to define the options for the specified request.
    */
-  post<ServiceResponse>(requestOptions: HttpRequestOptions): Observable<ServiceResponse> 
-  { 
+  post<ServiceResponse>(requestOptions: HttpRequestOptions): Observable<ServiceResponse> {
     this.http.options
     return this.http
       .post<ServiceResponse>(requestOptions.requestUrl, requestOptions.body, {
@@ -166,7 +200,7 @@ export class HttpBaseService {
   handleHttpError(error: any, requestOptions: HttpRequestOptions): Observable<ServiceResponse> {
     const message = `${error.toString()} ${requestOptions.requestUrl}, ${JSON.stringify(requestOptions.body)}`;
     this.loggingService.log(this.serviceName, Severity.Error, message);
-    if (error && error._body) {
+    if (error) {
       /**
        * This is an error that contains a body - a [Response] from the application web api. Includes:
        * 1. IsSuccess
@@ -175,8 +209,10 @@ export class HttpBaseService {
        * 4. Exception (optional)
        */
       try {
-        const response: ErrorResponse = error.json();
+        const response: ErrorResponse = new ErrorResponse();
         if (response) {
+          response.IsSuccess = false;
+          response.Message = error.message;
           const subject: BehaviorSubject<any> = new BehaviorSubject(response);
           return subject.asObservable();
         } else {

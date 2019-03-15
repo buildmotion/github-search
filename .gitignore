@@ -1,3 +1,4 @@
 workspace/apps/github-search-web/src/assets/config/configuration.development.json
 workspace/apps/github-search-web/src/assets/config/configuration.production.json
 resources/material-dashboard-angular2-master.zip
+resources/Postman-win64-7.0.6-Setup.exe

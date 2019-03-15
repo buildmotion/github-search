@@ -1,23 +1,45 @@
 import { Injectable } from '@angular/core';
 import { ServiceBase, ServiceResponse } from '@angularlicious/foundation';
 import { AngularliciousLoggingService } from '@angularlicious/logging';
-import { Observable } from 'rxjs';
-import { SearchCriteria } from '../../layouts/search-layout/models/i-search-criteria.model';
+import { Observable, ReplaySubject, Subscription, Subject } from 'rxjs';
+import { BusinessProviderService } from './business/business-provider.service';
+import { GithubUser } from './models/github-user.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GithubSearchService extends ServiceBase {
  
+  public onOwnerResultChange: Subject<GithubUser> = new ReplaySubject<GithubUser>();
+  public showOwnerResultSpinner: Subject<boolean> = new ReplaySubject<boolean>();
 
+  /**
+   * Use to provide Github API endpoints for the application.
+   * 
+   * @param loggingService A general logging service/provider.
+   * @param businessProvider Use to coordinate business logic and execution.
+   */
   constructor(
-    loggingService: AngularliciousLoggingService
+    loggingService: AngularliciousLoggingService,
+    private businessProvider: BusinessProviderService
   ) { 
     super(loggingService);
     this.serviceName = 'GithubSearchService';
   }
 
-  searchGithub(searchCriteria: SearchCriteria): Observable<ServiceResponse> {
-    throw new Error("Method not implemented.");
+  searchByOwner(owner: string): void {
+    // indicates spinner should display;
+    this.showOwnerResultSpinner.next(true);
+
+    this.businessProvider.searchByOwner(owner).subscribe(
+      response => this.handleOwnerResponse(response),
+      error => this.handleUnexpectedError(error),
+      () => this.finishRequest(this.serviceName)
+    );
+  }
+
+  handleOwnerResponse(response) {
+    this.showOwnerResultSpinner.next(false);
+    this.onOwnerResultChange.next(response);
   }
 }

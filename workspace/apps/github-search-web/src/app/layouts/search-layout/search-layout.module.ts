@@ -6,8 +6,9 @@ import { RouterModule } from '@angular/router';
 
 import { SearchRoutes } from './search-layout-routing.module';
 import { SiteModule } from '../../modules/site/site.module';
-import { SearchFormComponent } from './search/search-form/search-form.component';
+import { SearchFormComponent } from './search-form/search-form.component';
 import { SharedModule } from '../../modules/shared/shared.module';
+import { OwnerResultsComponent } from './owner-results/owner-results.component';
 
 @NgModule({
   imports: [
@@ -18,7 +19,8 @@ import { SharedModule } from '../../modules/shared/shared.module';
   ],
   declarations: [
     SearchComponent,
-    SearchFormComponent
+    SearchFormComponent,
+    OwnerResultsComponent
   ],
   exports: [
     SearchComponent

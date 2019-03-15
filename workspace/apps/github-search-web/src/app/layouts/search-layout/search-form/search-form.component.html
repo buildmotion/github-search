@@ -1,0 +1,27 @@
+<div class="col-lg-12 col-md-12">
+
+  <h2>GitHub Search: </h2>
+  <p>Use the search to find GitHub repository and owner information.</p>
+
+  <form novalidate (ngSubmit)="onSubmit(searchCriteria)" [formGroup]="searchCriteria">
+    <div>
+      <div class="error"
+        *ngIf="searchCriteria.get('owner').hasError('required') && searchCriteria.get('owner').touched">
+        Owner name is required.
+      </div>
+      <div class="error"
+        *ngIf="searchCriteria.get('owner').hasError('minlength') && searchCriteria.get('owner').touched">
+        Minimum of 2 characters
+      </div>
+      Owner: <input type="text" placeholder="buildmotion" formControlName="owner">
+    </div>
+
+    <div>
+      Full Name: <input type="text" placeholder="Matt Vaughn" formControlName="fullName">
+    </div>
+
+    <p *ngIf="searchCriteria.valid && isDebug">
+      Form Value: {{ searchCriteria.value | json }}
+    </p>
+  </form>
+</div>

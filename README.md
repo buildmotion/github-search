@@ -24,6 +24,9 @@
     - [Search Layout Module](#search-layout-module)
     - [Styles](#styles)
   - [GitHub Search Service](#github-search-service)
+  - [Business Logic](#business-logic)
+  - [GitHub API Details/Implementation](#github-api-detailsimplementation)
+  - [Search Results](#search-results)
   - [Angular Version Information](#angular-version-information)
   - [Nrwl.io Information](#nrwlio-information)
     - [Nrwl Extensions for Angular (Nx)](#nrwl-extensions-for-angular-nx)
@@ -1230,6 +1233,37 @@ export class GithubSearchService extends ServiceBase {
   }
 }
 
+```
+
+## Business Logic
+
+The domain service is the entry-point|end-point|API for the application. Components in the application will be consumers of the APIs provided by the domain services. Each domain service will encapsulate the business logic using a dedicated `business logic layer`. This layer has a coordinator of business logic called a `BusinessProvider` - it is an injectable service, but it provides the abstraction between the service and business layer.
+
+We want the services to have the responsibility of accepting requests and delivering response. The actual work involved in the processing of a request and creating a response is delegated to the business layer.
+
+## GitHub API Details/Implementation
+
+This application will use the `v3` API from GitHub. [Documentation here](https://developer.github.com/v3/).
+
+The following is required in the `Accept` header to explicitly request version 3.
+
+```ts
+Accept: application/vnd.github.v3+json
+```
+
+## Search Results
+
+```ts
+ng g component layouts/search-layout/ownerResults
+CREATE apps/github-search-web/src/app/layouts/search-layout/owner-results/owner-results.component.html (32 bytes)
+CREATE apps/github-search-web/src/app/layouts/search-layout/owner-results/owner-results.component.spec.ts (671 bytes)CREATE apps/github-search-web/src/app/layouts/search-layout/owner-results/owner-results.component.ts (307 bytes)
+CREATE apps/github-search-web/src/app/layouts/search-layout/owner-results/owner-results.component.css (0 bytes)UPDATE apps/github-search-web/src/app/layouts/search-layout/search-layout.module.ts (871 bytes)
+```
+
+```ts
+https://github.com/search?utf8=%E2%9C%93&q=user%3Aangularlicious+language%3ATypeScript&type=Repositories&ref=advsearch&l=&l=TypeScript
+
+https://github.com/search?utf8=%E2%9C%93&q=user%3Aangularlicious+language%3ATypeScript&type=Repositories&ref=advsearch&l=&l=TypeScript
 ```
 
 ## Angular Version Information
