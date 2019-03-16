@@ -2,7 +2,7 @@
 import * as rules from '@angularlicious/rules-engine';
 import { Severity } from '@angularlicious/logging';
 import { GithubSearchActionBase } from './github-search-action-base';
-import { SearchCriteria } from 'apps/github-search-web/src/app/layouts/search-layout/models/i-search-criteria.model';
+import { SearchCriteria } from './../../../../layouts/search-layout/models/i-search-criteria.model';
 
 export class SearchGithubAction extends GithubSearchActionBase {
 
@@ -40,7 +40,8 @@ export class SearchGithubAction extends GithubSearchActionBase {
         'The items per page value must be within 1 and 100.',
         this.searchCriteria.itemsPerPage,
         1,
-        100
+        100,
+        this.displayToUser
       )
     );
   }

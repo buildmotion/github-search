@@ -2,7 +2,7 @@
 
   <p>Use the search to find GitHub repositories and owner information.</p>
 
-  <form novalidate (ngSubmit)="onSubmit(searchCriteria)" [formGroup]="searchCriteria">
+  <form novalidate [formGroup]="searchCriteriaFormGroup">
     <div>
 
       <!-- <input type="text" placeholder="buildmotion" formControlName="repository"> -->
@@ -12,11 +12,11 @@
       </mat-form-field>
 
       <div class="error"
-        *ngIf="searchCriteria.get('repositoryName').hasError('required') && searchCriteria.get('repositoryName').touched">
+        *ngIf="searchCriteriaFormGroup.get('repositoryName').hasError('required') && searchCriteriaFormGroup.get('repositoryName').touched">
         Repository name is required.
       </div>
       <div class="error"
-        *ngIf="searchCriteria.get('repositoryName').hasError('minlength') && searchCriteria.get('repositoryName').touched">
+        *ngIf="searchCriteriaFormGroup.get('repositoryName').hasError('minlength') && searchCriteriaFormGroup.get('repositoryName').touched">
         Minimum of 2 characters
       </div>
 
@@ -30,8 +30,8 @@
       </mat-form-field>
     </div>
 
-    <p *ngIf="searchCriteria.valid && isDebug">
-      Form Value: {{ searchCriteria.value | json }}
+    <p>
+      Form Value: {{ searchCriteriaFormGroup.value | json }}
     </p>
   </form>
 </div>

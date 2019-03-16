@@ -39,7 +39,7 @@ export class RepositoryResultsComponent extends ComponentBase implements OnInit,
 
     this.repositoryResultSubscription = this.searchService.onRepositoryResultChange.subscribe(
       response => this.handleRepositoryResponse(response),
-      error => this.handleError(error),
+      error => this.handleServiceErrors(error, this.searchService.serviceContext),
       () => this.finishRequest(`Finished processing request for repositories.`)
     );
 

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { ServiceBase } from '@angularlicious/foundation';
+import { ServiceBase, ErrorResponse } from '@angularlicious/foundation';
 import { AngularliciousLoggingService } from '@angularlicious/logging';
-import { ReplaySubject, Subject } from 'rxjs';
+import { ReplaySubject, Subject, Observable } from 'rxjs';
 import { BusinessProviderService } from './business/business-provider.service';
 import { RepositoryResponse } from '../../layouts/search-layout/models/repository-response.model';
 import { GitHubUser } from '../../layouts/search-layout/models/owner.model';
@@ -33,27 +33,32 @@ export class GithubSearchService extends ServiceBase {
   ) { 
     super(loggingService);
     this.serviceName = 'GithubSearchService';
+
+    //IoC: provide the current [ServiceContext] and [LoggingService] to the business provider;
+    this.businessProvider.serviceContext = this.serviceContext;
+    this.businessProvider.loggingService = this.loggingService;
   }
 
   retrieveUser(userName: string) : void {
+    this.resetServiceContext();
     this.userName = userName;
 
     this.businessProvider.retrieveUser(userName).subscribe(
       response => this.handleUserResponse(response),
-      error => this.handleUnexpectedError(error),
+      error => this.handleRepositoryErrorResponse(error),
       () => this.finishRequest(this.serviceName)
     );
   }
 
   searchByRepository(searchCriteria: SearchCriteria): void {
+    this.resetServiceContext();
     this._searchCriteria = searchCriteria;
 
-    // indicates spinner should display;
     this.showRepositoryResultSpinner.next(true);
 
     this.businessProvider.searchByRepository(searchCriteria).subscribe(
       response => this.handleRepositoryResponse(response),
-      error => this.handleUnexpectedError(error),
+      error => this.handleRepositoryErrorResponse(error),
       () => this.finishRequest(this.serviceName)
     );
   }
@@ -66,11 +71,20 @@ export class GithubSearchService extends ServiceBase {
     this.onRepositoryResultChange.next(response);
   }
 
+  handleRepositoryErrorResponse(errorResponse: ErrorResponse) {
+    if(errorResponse instanceof ErrorResponse) {
+      this.repositoryResponse = new RepositoryResponse(); 
+
+      //BUBBLE THE ERROR INFORMATION TO THE SERVICE CONSUMER;
+      this.onRepositoryResultChange.error(errorResponse);
+    }
+    this.showRepositoryResultSpinner.next(false);
+  }
+
   handleUserResponse(response) {
     if(response instanceof GitHubUser) {
       this.userResponse = response;
     }
-
     this.onUserResultChange.next(response);
   }
   

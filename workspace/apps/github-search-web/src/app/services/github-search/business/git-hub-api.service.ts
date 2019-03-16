@@ -14,9 +14,8 @@ import { SearchCriteria } from '../../../layouts/search-layout/models/i-search-c
   providedIn: 'root'
 })
 export class GitHubApiService extends HttpBaseService {
-
   /**
-   * 
+   *
    * @param http The Angular HTTP client.
    * @param httpService An HTTP service that provides features to create API/Http requests.
    * @param loggingService A general purpose logging service.
@@ -25,8 +24,8 @@ export class GitHubApiService extends HttpBaseService {
     http: HttpClient,
     private httpService: HttpBaseService,
     loggingService: AngularliciousLoggingService
-  ) { 
-    super(http, loggingService)
+  ) {
+    super(http, loggingService);
   }
 
   /**
@@ -45,11 +44,15 @@ export class GitHubApiService extends HttpBaseService {
       null
     );
     return this.httpService.get(options);
-}
+  }
 
-  searchRepositories<GithubUser>(searchCriteria: SearchCriteria) : Observable<any> {
+  searchRepositories<GithubUser>(
+    searchCriteria: SearchCriteria
+  ): Observable<any> {
     // const requestUrl = `https://api.github.com/search/repositories?q=${repository}+language:typescript&sort=stars&order=desc`;
-    const requestUrl = `https://api.github.com/search/repositories?q=${searchCriteria}&sort=stars&order=desc&per_page=${searchCriteria.itemsPerPage}`;
+    const requestUrl = `https://api.github.com/search/repositories?q=${
+      searchCriteria.repositoryName
+    }&sort=stars&order=desc&per_page=${searchCriteria.itemsPerPage}`;
     const message = `${this.serviceName} preparing to call: ${requestUrl}`;
     this.loggingService.log(this.serviceName, Severity.Information, message);
 

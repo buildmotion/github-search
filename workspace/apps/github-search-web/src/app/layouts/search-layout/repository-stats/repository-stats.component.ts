@@ -19,6 +19,7 @@ export class RepositoryStatsComponent extends ComponentBase implements OnInit, O
   totalCount: number;
   incompleteResults: boolean
   responseCount: number;
+  showStatCards = false;
   
   constructor(
     private searchService: GithubSearchService,
@@ -31,7 +32,7 @@ export class RepositoryStatsComponent extends ComponentBase implements OnInit, O
   ngOnInit() {
     this.repositoryResultSubscription = this.searchService.onRepositoryResultChange.subscribe(
       response => this.handleRepositoryResponse(response),
-      error => this.handleError(error),
+      error => this.handleRepositoryResponse(error),
       () => this.finishRequest(``)
     );
   }
@@ -42,9 +43,12 @@ export class RepositoryStatsComponent extends ComponentBase implements OnInit, O
 
   handleRepositoryResponse(response) {
     if (response instanceof ErrorResponse) {
+      // do not display any stats ==> hide the stat cards;
+      this.showStatCards = false;
     } else {
       if (response) {
-
+        this.showStatCards = true;
+        
         // setup the data;
         this.repositories = response.items;
         this.totalCount = response.total_count;

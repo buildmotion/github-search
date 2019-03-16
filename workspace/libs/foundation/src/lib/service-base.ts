@@ -32,7 +32,7 @@ export class ServiceBase {
    * this base class. It will allow the members of the base class to log information
    * using the common LoggingService.
    */
-  constructor(public loggingService: AngularliciousLoggingService) { }
+  constructor(public loggingService: AngularliciousLoggingService) {}
 
   /**
    * Use to extract the contents of the HTTP body and return a JSON
@@ -48,7 +48,7 @@ export class ServiceBase {
    * Use to handle an unexpected error in the application. The error should implement
    * the specified interface. The method will add a new [ServiceMessage] to the
    * specified [ServiceContext].
-   * @param error An unexpected application error that implements the [Error] interface.
+   * @param errorResponse An unexpected application error that implements the [Error] interface.
    *
    * interface Error {
    *  name: string;
@@ -57,12 +57,12 @@ export class ServiceBase {
    * }
    */
   handleUnexpectedError(error: Error): void {
-    const message = new ServiceMessage(error.name, error.message)
-      .WithDisplayToUser(true)
+    const message = new ServiceMessage('Error', error.message)
+      .WithDisplayToUser(false) // DO NOT DISPLAY UNEXPECTED ERROR TO USER;
       .WithMessageType(MessageType.Error)
       .WithSource(this.serviceName);
 
-    const tags: string[] = [`${this.serviceName}`]
+    const tags: string[] = [`${this.serviceName}`];
     const logItem = `${message.toString()}; ${error.stack}`;
     this.loggingService.log(this.serviceName, Severity.Error, logItem, tags);
 
@@ -79,7 +79,7 @@ export class ServiceBase {
       .WithMessageType(MessageType.Error)
       .WithSource(this.serviceName);
 
-    const tags: string[] = [`${this.serviceName}`]
+    const tags: string[] = [`${this.serviceName}`];
 
     this.loggingService.log(
       this.serviceName,
@@ -100,7 +100,7 @@ export class ServiceBase {
   ): Observable<Response> {
     const message = `${error.toString()} ${
       requestOptions.requestUrl
-      }, ${JSON.stringify(requestOptions.body)}`;
+    }, ${JSON.stringify(requestOptions.body)}`;
     this.loggingService.log(this.serviceName, Severity.Error, message);
     if (error && error._body) {
       try {
@@ -137,7 +137,7 @@ export class ServiceBase {
   ): Observable<Response> {
     const message = `${error.toString()} ${
       requestOptions.requestUrl
-      }, ${JSON.stringify(requestOptions.body)}`;
+    }, ${JSON.stringify(requestOptions.body)}`;
     this.loggingService.log(this.serviceName, Severity.Error, message);
     if (error && error._body) {
       try {

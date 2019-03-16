@@ -119,11 +119,7 @@ export class ComponentBase {
   ) {
     this.loggingService.log(this.componentName, Severity.Information, `Preparing to handle service errors for component.`);
     if (serviceContext && serviceContext.hasErrors()) {
-      this.loggingService.log(
-        this.componentName,
-        Severity.Information,
-        `Retrieving error messages from the ServiceContext/ValidationContext;`
-      );
+      this.loggingService.log(this.componentName, Severity.Information, `Retrieving error messages from the ServiceContext/ValidationContext;`);
       const messages = this.retrieveServiceContextErrorMessages(serviceContext);
       this.alertNotification = new AlertNotification('Errors', errorResponse.Message, messages, AlertTypes.Warning);
     } else {
@@ -137,7 +133,7 @@ export class ComponentBase {
   }
 
   handleError(error) {
-    this.loggingService.log(this.componentName, Severity.Error, `Something weird happened. Ughh!!!`);
+    this.loggingService.log(this.componentName, Severity.Error, `Something weird happened. Ugh!!!`);
   }
 
   /**

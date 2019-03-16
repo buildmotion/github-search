@@ -96,24 +96,30 @@ export class ActionBase extends Action {
    * All concrete actions must override and implement this method. It is defined in the [Action] framework class.
    */
   validateActionResult(): ActionResult {
-    this.loggingService.log(
-      this.actionName,
-      Severity.Information,
-      `Running [validateActionResult] for ${this.actionName}.`
-    );
+    this.loggingService.log(this.actionName, Severity.Information, `Running [validateActionResult] for ${this.actionName}.`);
     // determine the status of the action based on any rule violations;
     if (this.validationContext.hasRuleViolations()) {
-      this.loggingService.log(
-        this.actionName,
-        Severity.Error,
-        `The ${this.actionName} contains rule violations.`
-      );
+      this.loggingService.log(this.actionName,Severity.Error,`The ${this.actionName} contains rule violations.`);
       this.actionResult = ActionResult.Fail;
 
       const errorResponse = new ErrorResponse();
       errorResponse.IsSuccess = false;
       errorResponse.Message = `Validation errors exist.`;
-      this.response = Observable.throw(errorResponse);
+      
+      // add error(s) from the service context;
+      if(this.serviceContext.hasErrors) {
+        this.serviceContext.Messages.forEach(item => {
+          const serviceError = new ServiceError();
+          serviceError.DisplayToUser = item.DisplayToUser;
+          serviceError.Message = item.Message;
+          serviceError.Name = item.Name;
+          serviceError.Source = item.Source;
+
+          errorResponse.Errors.push(serviceError);
+        });
+      }
+      
+      this.response = Observable.throwError(errorResponse);
     }
     this.actionResult = this.serviceContext.isGood()
       ? ActionResult.Success
