@@ -8,7 +8,9 @@ import { SearchRoutes } from './search-layout-routing.module';
 import { SiteModule } from '../../modules/site/site.module';
 import { SearchFormComponent } from './search-form/search-form.component';
 import { SharedModule } from '../../modules/shared/shared.module';
-import { OwnerResultsComponent } from './owner-results/owner-results.component';
+import { RepositoryResultsComponent } from './repository-results/repository-results.component';
+import { RepositoryStatsComponent } from './repository-stats/repository-stats.component';
+import { UserDetailsComponent } from './user-details/user-details.component';
 
 @NgModule({
   imports: [
@@ -20,7 +22,9 @@ import { OwnerResultsComponent } from './owner-results/owner-results.component';
   declarations: [
     SearchComponent,
     SearchFormComponent,
-    OwnerResultsComponent
+    RepositoryResultsComponent,
+    RepositoryStatsComponent,
+    UserDetailsComponent
   ],
   exports: [
     SearchComponent

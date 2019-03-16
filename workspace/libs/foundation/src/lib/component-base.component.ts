@@ -13,7 +13,6 @@ import {
 } from '@angularlicious/logging';
 import { AlertNotification } from './models/alert-notification.model';
 import { AlertTypes } from './models/alert-types.constants';
-import { environment } from 'apps/github-search-web/src/environments/environment';
 
 export class ComponentBase {
   componentName: string;
@@ -137,6 +136,10 @@ export class ComponentBase {
     }
   }
 
+  handleError(error) {
+    this.loggingService.log(this.componentName, Severity.Error, `Something weird happened. Ughh!!!`);
+  }
+
   /**
    * Use to retrieve the error messages from the specified [ServiceContext].
    *
@@ -209,7 +212,7 @@ export class ComponentBase {
    * if the environment.production value is [false].
    */
   get isDebug(): boolean {
-    this._isDebug = (environment.production === false);
+    // this._isDebug = (environment.production === false);
     return this._isDebug;
   }
     

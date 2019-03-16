@@ -1,0 +1,72 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header card-header-danger">
+                        <h4 class="card-title">Profile</h4>
+                        <p class="card-category">GitHub user information.</p>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="row">
+                                <div class="col-md-5">
+                                  Company: {{user.company}}
+                                </div>
+                                <div class="col-md-3">
+                                    UserName: {{user.login}}
+                                </div>
+                                <div class="col-md-4">
+                                   Email: {{user.email}}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                  Name:  {{user.name}}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                  Location:  {{user.location}}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                 Followers: {{user.followers}}
+                                </div>
+                                <div class="col-md-4">
+                                  Following: {{user.following}}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                  <label>About Me</label>
+                                  {{user.bio}}
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card card-profile">
+                    <div class="card-avatar">
+                        <a href="#pablo">
+                            <img class="img" src="{{user.avatar_url}}" alt="{{user.name}}" />
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        <h6 class="card-category text-gray">CEO / Co-Founder</h6>
+                        <h4 class="card-title">{{user.name}}</h4>
+                        <p class="card-description">
+                          {{user.bio}}
+                        </p>
+                        <a href="#pablo" class="btn btn-danger btn-round">Follow</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+  

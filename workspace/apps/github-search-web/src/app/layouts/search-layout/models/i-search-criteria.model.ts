@@ -1,6 +1,6 @@
 
 export interface SearchCriteria {
 
-    owner: string;
-    fullName: string;
+    repositoryName: string;
+    itemsPerPage: number;
 }

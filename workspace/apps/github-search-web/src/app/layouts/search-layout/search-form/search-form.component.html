@@ -1,23 +1,33 @@
 <div class="col-lg-12 col-md-12">
 
-  <h2>GitHub Search: </h2>
-  <p>Use the search to find GitHub repository and owner information.</p>
+  <p>Use the search to find GitHub repositories and owner information.</p>
 
   <form novalidate (ngSubmit)="onSubmit(searchCriteria)" [formGroup]="searchCriteria">
     <div>
+
+      <!-- <input type="text" placeholder="buildmotion" formControlName="repository"> -->
+
+      <mat-form-field class="search-full-width">
+        <input matInput formControlName="repositoryName" placeholder="Enter repository name...(i.e., buildmotion)" value="">
+      </mat-form-field>
+
       <div class="error"
-        *ngIf="searchCriteria.get('owner').hasError('required') && searchCriteria.get('owner').touched">
-        Owner name is required.
+        *ngIf="searchCriteria.get('repositoryName').hasError('required') && searchCriteria.get('repositoryName').touched">
+        Repository name is required.
       </div>
       <div class="error"
-        *ngIf="searchCriteria.get('owner').hasError('minlength') && searchCriteria.get('owner').touched">
+        *ngIf="searchCriteria.get('repositoryName').hasError('minlength') && searchCriteria.get('repositoryName').touched">
         Minimum of 2 characters
       </div>
-      Owner: <input type="text" placeholder="buildmotion" formControlName="owner">
+
     </div>
 
     <div>
-      Full Name: <input type="text" placeholder="Matt Vaughn" formControlName="fullName">
+      <mat-form-field class="search-full-width">
+        <mat-select formControlName="itemsPerPage" placeholder="Items per page">
+          <mat-option *ngFor="let option of itemsPerPageOptions" [value]="option">{{option}}</mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
 
     <p *ngIf="searchCriteria.valid && isDebug">

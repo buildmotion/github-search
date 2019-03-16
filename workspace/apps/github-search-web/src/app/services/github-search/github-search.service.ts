@@ -1,17 +1,25 @@
 import { Injectable } from '@angular/core';
-import { ServiceBase, ServiceResponse } from '@angularlicious/foundation';
+import { ServiceBase } from '@angularlicious/foundation';
 import { AngularliciousLoggingService } from '@angularlicious/logging';
-import { Observable, ReplaySubject, Subscription, Subject } from 'rxjs';
+import { ReplaySubject, Subject } from 'rxjs';
 import { BusinessProviderService } from './business/business-provider.service';
-import { GithubUser } from './models/github-user.model';
+import { RepositoryResponse } from '../../layouts/search-layout/models/repository-response.model';
+import { GitHubUser } from '../../layouts/search-layout/models/owner.model';
+import { SearchCriteria } from '../../layouts/search-layout/models/i-search-criteria.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GithubSearchService extends ServiceBase {
  
-  public onOwnerResultChange: Subject<GithubUser> = new ReplaySubject<GithubUser>();
-  public showOwnerResultSpinner: Subject<boolean> = new ReplaySubject<boolean>();
+  public onRepositoryResultChange: Subject<RepositoryResponse> = new ReplaySubject<RepositoryResponse>();
+  public showRepositoryResultSpinner: Subject<boolean> = new ReplaySubject<boolean>();
+  private repositoryResponse: RepositoryResponse;
+  private _searchCriteria: SearchCriteria;
+
+  public onUserResultChange: Subject<GitHubUser> = new ReplaySubject<GitHubUser>();
+  userName: string;
+  userResponse: GitHubUser;
 
   /**
    * Use to provide Github API endpoints for the application.
@@ -27,19 +35,49 @@ export class GithubSearchService extends ServiceBase {
     this.serviceName = 'GithubSearchService';
   }
 
-  searchByOwner(owner: string): void {
-    // indicates spinner should display;
-    this.showOwnerResultSpinner.next(true);
+  retrieveUser(userName: string) : void {
+    this.userName = userName;
 
-    this.businessProvider.searchByOwner(owner).subscribe(
-      response => this.handleOwnerResponse(response),
+    this.businessProvider.retrieveUser(userName).subscribe(
+      response => this.handleUserResponse(response),
       error => this.handleUnexpectedError(error),
       () => this.finishRequest(this.serviceName)
     );
   }
 
-  handleOwnerResponse(response) {
-    this.showOwnerResultSpinner.next(false);
-    this.onOwnerResultChange.next(response);
+  searchByRepository(searchCriteria: SearchCriteria): void {
+    this._searchCriteria = searchCriteria;
+
+    // indicates spinner should display;
+    this.showRepositoryResultSpinner.next(true);
+
+    this.businessProvider.searchByRepository(searchCriteria).subscribe(
+      response => this.handleRepositoryResponse(response),
+      error => this.handleUnexpectedError(error),
+      () => this.finishRequest(this.serviceName)
+    );
+  }
+
+  handleRepositoryResponse(response) {
+    if(response instanceof RepositoryResponse) {
+      this.repositoryResponse = response;
+    }
+    this.showRepositoryResultSpinner.next(false);
+    this.onRepositoryResultChange.next(response);
+  }
+
+  handleUserResponse(response) {
+    if(response instanceof GitHubUser) {
+      this.userResponse = response;
+    }
+
+    this.onUserResultChange.next(response);
+  }
+  
+  /**
+   * Use to retrieve the current value of the repository name search criteria.
+   */
+  get searchCriteria(): SearchCriteria {
+    return this._searchCriteria;
   }
 }

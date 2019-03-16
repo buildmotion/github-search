@@ -5,7 +5,8 @@ import { AngularliciousLoggingService, Severity } from '@angularlicious/logging'
 import { Router } from '@angular/router';
 // tslint:disable-next-line: nx-enforce-module-boundaries
 import { GithubSearchService } from './../../../services/github-search/github-search.service';
-import { Subject, Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs-compat';
+import { SearchCriteria } from '../models/i-search-criteria.model';
 
 @Component({
   selector: 'angularlicious-search-form',
@@ -16,9 +17,12 @@ export class SearchFormComponent extends ComponentBase implements OnInit, OnDest
 
 
   searchCriteria: FormGroup;
-  ownerTextChanged = new Subject<string>();
-  ownerChangeSubscription: Subscription;
+  repositoryTextChanged = new Subject<SearchCriteria>();
+  searchCriteriaChangeSubscription: Subscription;
   data: any;
+
+  itemsPerPageOptions: number[] = [5,10,25,50,100];
+  defaultPerPageOption = '10';
 
   constructor(
     loggingService: AngularliciousLoggingService,
@@ -30,40 +34,47 @@ export class SearchFormComponent extends ComponentBase implements OnInit, OnDest
   }
 
   ngOnDestroy(): void {
-    this.ownerChangeSubscription.unsubscribe();
+    this.searchCriteriaChangeSubscription.unsubscribe();
   }
 
   ngOnInit() {
     this.searchCriteria = this.formBuilder.group(
       {
-        owner: new FormControl('', [
+        repositoryName: new FormControl('', [
           Validators.required,
-          Validators.minLength(2)
-        ]),
-        fullName: new FormControl('')
+          Validators.minLength(2),
+          Validators.maxLength(40)
+        ])
+      },
+      {
+        itemsPerPage: new FormControl('', [
+          Validators.required,
+          Validators.min(1),
+          Validators.max(100)
+        ])
       }
     );
 
-    this.ownerChangeSubscription = this.ownerTextChanged
+    this.searchCriteriaChangeSubscription = this.repositoryTextChanged.pipe()
       .debounceTime(1200)
       .distinctUntilChanged()
-      .subscribe(owner => this.performOwnerSearch(owner));
+      .subscribe(searchCriteria => this.performRepositorySearch(searchCriteria));
 
-    this.searchCriteria.get('owner').valueChanges
+    this.searchCriteria.valueChanges
       .subscribe(
-        ownerChange => this.handleOwnerChange(ownerChange)
+        criteriaChange => this.handleSearchCriteriaChange(criteriaChange)
       );
   }
 
-  handleOwnerChange(owner: string) {
-    if (owner && owner.length >= 2) {
-      this.loggingService.log(this.componentName, Severity.Information, `Preparing to search for ${owner}`);
-      this.ownerTextChanged.next(owner);
+  handleSearchCriteriaChange(searchCriteria: SearchCriteria) {
+    if (searchCriteria) {
+      this.loggingService.log(this.componentName, Severity.Information, `Preparing to search for ${searchCriteria.repositoryName}`);
+      this.repositoryTextChanged.next(searchCriteria);
     }
   }
 
-  performOwnerSearch(owner) {
-    this.loggingService.log(this.componentName, Severity.Information, `Preparing to process search criteria: ${JSON.stringify(owner.value)}`)
-    this.searchService.searchByOwner(owner);
+  performRepositorySearch(searchCriteria: SearchCriteria) {
+    this.loggingService.log(this.componentName, Severity.Information, `Preparing to process search criteria: ${JSON.stringify(searchCriteria)}`)
+    this.searchService.searchByRepository(searchCriteria);
   }
 }

@@ -8,6 +8,7 @@ import {
   Severity
 } from '@angularlicious/logging';
 import { HttpRequestMethod } from '@angularlicious/foundation';
+import { SearchCriteria } from '../../../layouts/search-layout/models/i-search-criteria.model';
 
 @Injectable({
   providedIn: 'root'
@@ -28,8 +29,12 @@ export class GitHubApiService extends HttpBaseService {
     super(http, loggingService)
   }
 
-  searchByOwner<GithubUser>(owner: string) : Observable<any> {
-    const requestUrl = 'https://api.github.com/users/' + owner;
+  /**
+   * Use to retrieve GitHub user information.
+   * @param userName the owner name of the repository.
+   */
+  retrieveUser(userName: string): Observable<any> {
+    const requestUrl = `https://api.github.com/users/${userName}`;
     const message = `${this.serviceName} preparing to call: ${requestUrl}`;
     this.loggingService.log(this.serviceName, Severity.Information, message);
 
@@ -39,12 +44,21 @@ export class GitHubApiService extends HttpBaseService {
       requestUrl,
       null
     );
-    // this.httpService.get(options).subscribe(
-    //   payload => this.handleSuccess(payload),
-    //   error => this.handleHttpError(error, options),
-    //   () => this.finish(`Finished processing request for ${options.requestUrl}`)
-    // );
+    return this.httpService.get(options);
+}
 
+  searchRepositories<GithubUser>(searchCriteria: SearchCriteria) : Observable<any> {
+    // const requestUrl = `https://api.github.com/search/repositories?q=${repository}+language:typescript&sort=stars&order=desc`;
+    const requestUrl = `https://api.github.com/search/repositories?q=${searchCriteria}&sort=stars&order=desc&per_page=${searchCriteria.itemsPerPage}`;
+    const message = `${this.serviceName} preparing to call: ${requestUrl}`;
+    this.loggingService.log(this.serviceName, Severity.Information, message);
+
+    const options = this.httpService.createRequestOptions(
+      HttpRequestMethod.get,
+      this.httpService.createGithubHeader(false),
+      requestUrl,
+      null
+    );
     return this.httpService.get(options);
   }
 }

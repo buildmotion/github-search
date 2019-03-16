@@ -1,10 +1,8 @@
-
 import * as rules from '@angularlicious/rules-engine';
 import { Severity } from '@angularlicious/logging';
 import { GithubSearchActionBase } from './github-search-action-base';
-import { SearchCriteria } from 'apps/github-search-web/src/app/layouts/search-layout/models/i-search-criteria.model';
 
-export class SearchGithubAction extends GithubSearchActionBase {
+export class RetrieveUserAction extends GithubSearchActionBase {
 
   displayRuleViolations = true;
   doNotDisplayRuleViolations = false;
@@ -12,9 +10,9 @@ export class SearchGithubAction extends GithubSearchActionBase {
   doNotDisplayToUser = false;
 
   constructor(
-    private searchCriteria: SearchCriteria) {
+    private userName: string) {
     super();
-    this.actionName = 'SearchGithubAction';
+    this.actionName = 'RetrieveUserAction';
   }
 
   /**
@@ -29,20 +27,12 @@ export class SearchGithubAction extends GithubSearchActionBase {
     // the search criteria must include valid search values.
     this.validationContext.addRule(new rules.StringIsNotNullEmptyRange(
       'OwnerNameIsValid',
-      'The repository name is not valid - must be within 2 and 40 characters.',
-      this.searchCriteria.repositoryName,
+      'The user name is not valid - must be within 2 and 25 characters.',
+      this.userName,
       2,
-      40,
+      25,
       this.displayToUser
-    )).addRule(
-      new rules.Range(
-        'ItemsPerPageIsValid',
-        'The items per page value must be within 1 and 100.',
-        this.searchCriteria.itemsPerPage,
-        1,
-        100
-      )
-    );
+    ));
   }
 
   /**
@@ -51,6 +41,6 @@ export class SearchGithubAction extends GithubSearchActionBase {
    */
   performAction() {
     this.loggingService.log(this.actionName, Severity.Information, `Running the [performAction] for the ${this.actionName}.`);
-    this.response = this.businessProvider.githubApiService.searchRepositories(this.searchCriteria);
+    this.response = this.businessProvider.githubApiService.retrieveUser(this.userName);
   }
 }

@@ -6,6 +6,7 @@
         "buildmotion",
         "contentful",
         "handlicious",
-        "minlength"
+        "minlength",
+        "paginator"
     ]
 }
