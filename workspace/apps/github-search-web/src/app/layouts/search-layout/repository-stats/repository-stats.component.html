@@ -7,56 +7,58 @@
                     <i class="material-icons">content_copy</i>
                 </div>
                 <p class="card-category">Total Results Available</p>
-                <h3 class="card-title">{{responseCount}}/{{totalCount}}
+                <h3 class="card-title">{{totalCount}}
                     <small></small>
                 </h3>
             </div>
             <div class="card-footer">
                 <div class="stats">
                     <i class="material-icons text-danger">warning</i>
-                    <a href="#pablo">Show More Repos...</a>
+                    <a href="#pablo">Total number of items available from GitHub.</a>
                 </div>
             </div>
         </div>
     </div>
     <!-- TOTAL REPOSITORY STATS: END -->
 
-    <!-- REPOSITORY SCORE: START -->
+    <!-- REPOSITORY ITEMS PER PAGE: START -->
     <div class="col-lg-3 col-md-6 col-sm-6">
         <div class="card card-stats">
             <div class="card-header card-header-success card-header-icon">
                 <div class="card-icon">
-                    <i class="material-icons">store</i>
+                    <i class="material-icons">inbox</i>
                 </div>
-                <p class="card-category">Revenue</p>
-                <h3 class="card-title">$34,245</h3>
+                <p class="card-category">Items per Page</p>
+                <h3 class="card-title">{{itemsPerPage}}</h3>
             </div>
             <div class="card-footer">
                 <div class="stats">
-                    <i class="material-icons">date_range</i> Last 24 Hours
+                    <i class="material-icons">date_range</i> The number of items to display per page.
                 </div>
             </div>
         </div>
     </div>
-    <!-- REPOSITORY SCORE: START -->
+    <!-- REPOSITORY ITEMS PER PAGE: START -->
 
-    
+    <!-- RESULT PAGE NUMBER : START -->
     <div class="col-lg-3 col-md-6 col-sm-6">
         <div class="card card-stats">
             <div class="card-header card-header-danger card-header-icon">
                 <div class="card-icon">
                     <i class="material-icons">info_outline</i>
                 </div>
-                <p class="card-category">Fixed Issues</p>
-                <h3 class="card-title">75</h3>
+                <p class="card-category">Result Page Number</p>
+                <h3 class="card-title">{{resultPageNumber}}</h3>
             </div>
             <div class="card-footer">
                 <div class="stats">
-                    <i class="material-icons">local_offer</i> Tracked from Github
+                    <i class="material-icons">local_offer</i> The current page of the result.
                 </div>
             </div>
         </div>
     </div>
+    <!-- RESULT PAGE NUMBER : END -->
+
     <div class="col-lg-3 col-md-6 col-sm-6">
         <div class="card card-stats">
             <div class="card-header card-header-info card-header-icon">

@@ -12,12 +12,13 @@ import { SearchCriteria } from '../../layouts/search-layout/models/i-search-crit
 })
 export class GithubSearchService extends ServiceBase {
  
-  public onRepositoryResultChange: Subject<RepositoryResponse> = new ReplaySubject<RepositoryResponse>();
-  public showRepositoryResultSpinner: Subject<boolean> = new ReplaySubject<boolean>();
+  public onSearchCriteriaChange: Subject<SearchCriteria> = new ReplaySubject<SearchCriteria>(4);
+  public onRepositoryResultChange: Subject<RepositoryResponse> = new ReplaySubject<RepositoryResponse>(4);
+  public showRepositoryResultSpinner: Subject<boolean> = new ReplaySubject<boolean>(4);
   private repositoryResponse: RepositoryResponse;
   private _searchCriteria: SearchCriteria;
 
-  public onUserResultChange: Subject<GitHubUser> = new ReplaySubject<GitHubUser>();
+  public onUserResultChange: Subject<GitHubUser> = new ReplaySubject<GitHubUser>(1);
   userName: string;
   userResponse: GitHubUser;
 
@@ -64,9 +65,7 @@ export class GithubSearchService extends ServiceBase {
   }
 
   handleRepositoryResponse(response) {
-    if(response instanceof RepositoryResponse) {
-      this.repositoryResponse = response;
-    }
+    this.repositoryResponse = response;
     this.showRepositoryResultSpinner.next(false);
     this.onRepositoryResultChange.next(response);
   }

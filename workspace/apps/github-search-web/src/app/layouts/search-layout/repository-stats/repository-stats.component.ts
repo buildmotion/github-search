@@ -12,13 +12,15 @@ import { ComponentBase, ErrorResponse } from '@angularlicious/foundation';
   styleUrls: ['./repository-stats.component.css']
 })
 export class RepositoryStatsComponent extends ComponentBase implements OnInit, OnDestroy {
- 
-
+  
+  searchCriteriaChangeSubscription: Subscription;
   repositoryResultSubscription: Subscription;
   repositories: Repository[];
   totalCount: number;
   incompleteResults: boolean
   responseCount: number;
+  resultPageNumber: number;
+  itemsPerPage: number;
   showStatCards = false;
   
   constructor(
@@ -34,6 +36,10 @@ export class RepositoryStatsComponent extends ComponentBase implements OnInit, O
       response => this.handleRepositoryResponse(response),
       error => this.handleRepositoryResponse(error),
       () => this.finishRequest(``)
+    );
+
+    this.searchCriteriaChangeSubscription = this.searchService.onSearchCriteriaChange.subscribe(
+      searchCriteria => { this.itemsPerPage = searchCriteria.itemsPerPage;}
     );
   }
 
@@ -53,10 +59,8 @@ export class RepositoryStatsComponent extends ComponentBase implements OnInit, O
         this.repositories = response.items;
         this.totalCount = response.total_count;
         this.incompleteResults = response.incomplete_results;
-
-        if(this.repositories) {
-          this.responseCount = this.repositories.length;
-        }
+        this.resultPageNumber = 69;
+        this.responseCount = this.repositories.length;
       } 
     }
   }

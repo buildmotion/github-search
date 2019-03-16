@@ -9,28 +9,28 @@
                     </div>
                     <div class="card-body">
                         <form>
-                            <div class="row">
+                            <div class="row" *ngIf="user">
                                 <div class="col-md-5">
-                                  Company: {{user.company}}
+                                  Company: {{ (user.company !== null) ? user.company : ""}}
                                 </div>
                                 <div class="col-md-3">
-                                    UserName: {{user.login}}
+                                    UserName: {{ (user.login !== null ) ? user.login : ""}}
                                 </div>
                                 <div class="col-md-4">
-                                   Email: {{user.email}}
+                                   Email: {{ (user.email !== null) ? user.email : ""}}
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row" *ngIf="user">
                                 <div class="col-md-6">
                                   Name:  {{user.name}}
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row" *ngIf="user">
                                 <div class="col-md-12">
-                                  Location:  {{user.location}}
+                                  Location:  {{ (user.location !== null) ? user.location : ""}}
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row" *ngIf="user">
                                 <div class="col-md-4">
                                  Followers: {{user.followers}}
                                 </div>
@@ -38,10 +38,10 @@
                                   Following: {{user.following}}
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row" *ngIf="user">
                                 <div class="col-md-12">
                                   <label>About Me</label>
-                                  {{user.bio}}
+                                  {{ (user.bio !== null) ? user.bio : ""}}
                                 </div>
                             </div>
                             <div class="clearfix"></div>
@@ -57,10 +57,9 @@
                         </a>
                     </div>
                     <div class="card-body">
-                        <h6 class="card-category text-gray">CEO / Co-Founder</h6>
                         <h4 class="card-title">{{user.name}}</h4>
                         <p class="card-description">
-                          {{user.bio}}
+                          {{ (user.bio !== null) ? user.bio : ""}}
                         </p>
                         <a href="#pablo" class="btn btn-danger btn-round">Follow</a>
                     </div>

@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { GithubSearchService } from '../../../services/github-search/github-search.service';
 import { Repository } from '../models/repository.model';
+import { SearchCriteria } from '../models/i-search-criteria.model';
 
 @Component({
   selector: 'angularlicious-repository-results',
@@ -17,6 +18,7 @@ export class RepositoryResultsComponent extends ComponentBase implements OnInit,
   dataSource: MatTableDataSource<Repository> = new MatTableDataSource<Repository>();
   @ViewChild('repositoryPaginator') paginator: MatPaginator;
 
+  searchCriteriaSubscription: Subscription;
   repositoryResultSubscription: Subscription;
   showSpinnerSubscription: Subscription;
   showSpinner: boolean;
@@ -49,17 +51,29 @@ export class RepositoryResultsComponent extends ComponentBase implements OnInit,
         this.hasData = false;
       }
     );
+
+    this.searchCriteriaSubscription = this.searchService.onSearchCriteriaChange.subscribe(
+      searchCriteriaChange => this.handleSearchCriteriaChange(searchCriteriaChange)
+    );
   }
 
   private setupDataSource() {
     this.dataSource.paginator = this.paginator
     this.dataSource.data = this.repositories;
+
+    this.paginator.pageSize
   }
 
   ngOnDestroy(): void {
     this.repositoryResultSubscription.unsubscribe();
     this.showSpinnerSubscription.unsubscribe();
   }
+  
+    handleSearchCriteriaChange(searchCriteriaChange: SearchCriteria) {
+      if(searchCriteriaChange) {
+        this.paginator.pageSize = searchCriteriaChange.itemsPerPage;
+      }
+    }
 
   handleRepositoryResponse(response) {
     if (response instanceof ErrorResponse) {

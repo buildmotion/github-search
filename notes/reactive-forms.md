@@ -9,6 +9,49 @@ Note that page numbering is 1-based and that omitting the ?page parameter will r
 https://api.github.com/search/repositories?q=buildmotion+language:typescript&sort=stars&order=desc
 
 
+- 100 max page size
+
+```ts
+Request URL: https://api.github.com/search/repositories?q=angular&sort=stars&order=desc&per_page=100
+Request Method: GET
+Status Code: 200 OK
+Remote Address: 192.30.253.116:443
+Referrer Policy: no-referrer-when-downgrade
+Access-Control-Allow-Origin: *
+Access-Control-Expose-Headers: ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type
+Cache-Control: no-cache
+Content-Encoding: gzip
+Content-Security-Policy: default-src 'none'
+Content-Type: application/json; charset=utf-8
+Date: Sat, 16 Mar 2019 23:08:20 GMT
+Link: 
+    <https://api.github.com/search/repositories?q=angular&sort=stars&order=desc&per_page=100&page=2>; rel="next", 
+    <https://api.github.com/search/repositories?q=angular&sort=stars&order=desc&per_page=100&page=10>; rel="last"
+Referrer-Policy: origin-when-cross-origin, strict-origin-when-cross-origin
+Server: GitHub.com
+Status: 200 OK
+Strict-Transport-Security: max-age=31536000; includeSubdomains; preload
+Transfer-Encoding: chunked
+X-Content-Type-Options: nosniff
+X-Frame-Options: deny
+X-GitHub-Media-Type: github.v3
+X-GitHub-Request-Id: E4BC:0249:5D904B:F06F02:5C8D81E2
+X-RateLimit-Limit: 10
+X-RateLimit-Remaining: 9
+X-RateLimit-Reset: 1552777758
+X-XSS-Protection: 1; mode=block
+Provisional headers are shown
+Accept: application/json, text/plain, */*
+Content-Type: application/json
+Origin: http://localhost:4200
+Referer: http://localhost:4200/dashboard
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36
+q: angular
+sort: stars
+order: desc
+per_page: 100
+```
+
 ```html
    <!-- CHARTS AND GRAPHS: START -->
         <div class="row">

@@ -9,6 +9,7 @@ import {
 } from '@angularlicious/logging';
 import { HttpRequestMethod } from '@angularlicious/foundation';
 import { SearchCriteria } from '../../../layouts/search-layout/models/i-search-criteria.model';
+import { RepositoryResponse } from '../../../layouts/search-layout/models/repository-response.model';
 
 @Injectable({
   providedIn: 'root'
@@ -48,11 +49,10 @@ export class GitHubApiService extends HttpBaseService {
 
   searchRepositories<GithubUser>(
     searchCriteria: SearchCriteria
-  ): Observable<any> {
+  ): Observable<RepositoryResponse> {
     // const requestUrl = `https://api.github.com/search/repositories?q=${repository}+language:typescript&sort=stars&order=desc`;
-    const requestUrl = `https://api.github.com/search/repositories?q=${
-      searchCriteria.repositoryName
-    }&sort=stars&order=desc&per_page=${searchCriteria.itemsPerPage}`;
+    const pageSize = 100;
+    const requestUrl = `https://api.github.com/search/repositories?q=${searchCriteria.repositoryName}&sort=stars&order=desc&per_page=${pageSize}`;
     const message = `${this.serviceName} preparing to call: ${requestUrl}`;
     this.loggingService.log(this.serviceName, Severity.Information, message);
 

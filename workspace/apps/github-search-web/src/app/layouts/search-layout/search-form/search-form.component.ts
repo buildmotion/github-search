@@ -24,6 +24,7 @@ export class SearchFormComponent extends ComponentBase implements OnInit, OnDest
 
   itemsPerPageOptions: number[] = [5,10,25,50,100];
   defaultPerPageOption = '10';
+  page = 1; // INITIAL DEFAULT PAGE FOR API;
 
   constructor(
     loggingService: AngularliciousLoggingService,
@@ -53,35 +54,45 @@ export class SearchFormComponent extends ComponentBase implements OnInit, OnDest
         ])
       }
     );
+    
+    this.subscribeToSearchCriteriaChanges();
+    this.subscribeToSearchFormValueChanges();
+    this.subscribeToRepositoryResultChanges();
+  }
 
-    this.searchCriteriaChangeSubscription = this.searchCriteriaChanged.pipe()
+  private subscribeToRepositoryResultChanges() {
+    this.responseChangeSubscription = this.searchService.onRepositoryResultChange.pipe()
+      .subscribe(() => { }, // do nothing with the response on this component; listening for [ErrorResponse];
+        // do nothing with the response on this component; listening for [ErrorResponse];
+        error => this.handleServiceErrors(error, this.searchService.serviceContext), () => this.finishRequest(`Finished processing response from the the [search criteria] form.`));
+  }
+
+  private subscribeToSearchCriteriaChanges() {
+    // this.searchCriteriaChangeSubscription = this.searchCriteriaChanged.pipe()
+    this.searchCriteriaChangeSubscription = this.searchService.onSearchCriteriaChange.pipe()
       .debounceTime(1200)
       .distinctUntilChanged()
       .subscribe(searchCriteria => this.performRepositorySearch(searchCriteria));
-
-    this.searchCriteriaFormGroup.valueChanges.pipe()
-      .debounceTime(750)
-      .subscribe(
-        criteriaChange => this.handleSearchCriteriaChange(criteriaChange)
-      );
-
-    this.responseChangeSubscription = this.searchService.onRepositoryResultChange.pipe()
-        .subscribe(
-          () => {},// do nothing with the response on this component; listening for [ErrorResponse];
-          error => this.handleServiceErrors(error, this.searchService.serviceContext),
-          () => this.finishRequest(`Finished processing response from the the [search criteria] form.`)
-        );
   }
 
-  handleSearchCriteriaChange(searchCriteria: SearchCriteria) {
+  private subscribeToSearchFormValueChanges() {
+    this.searchCriteriaFormGroup.valueChanges.pipe()
+      .debounceTime(750)
+      .subscribe(criteriaChange => this.handleSearchCriteriaChange(criteriaChange));
+  }
+
+  private handleSearchCriteriaChange(searchCriteria: SearchCriteria) {
     if (searchCriteria) {
       this.loggingService.log(this.componentName, Severity.Information, `Preparing to search for ${searchCriteria.repositoryName}`);
-      this.searchCriteriaChanged.next(searchCriteria);
+      this.searchService.onSearchCriteriaChange.next(searchCriteria);
+      // this.searchCriteriaChanged.next(searchCriteria);
     }
   }
 
-  performRepositorySearch(searchCriteria: SearchCriteria) {
-    this.loggingService.log(this.componentName, Severity.Information, `Preparing to process search criteria: ${JSON.stringify(searchCriteria)}`)
-    this.searchService.searchByRepository(searchCriteria);
+  private performRepositorySearch(searchCriteria: SearchCriteria) {
+    if(this.searchCriteriaFormGroup.valid) {
+      this.loggingService.log(this.componentName, Severity.Information, `Preparing to process search criteria: ${JSON.stringify(searchCriteria)}`)
+      this.searchService.searchByRepository(searchCriteria);
+    }
   }
 }
