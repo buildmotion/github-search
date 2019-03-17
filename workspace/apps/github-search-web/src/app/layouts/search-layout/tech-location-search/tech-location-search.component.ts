@@ -13,11 +13,13 @@ import { TechLocationCriteria } from '../models/i-tech-location.model';
   styleUrls: ['./tech-location-search.component.css']
 })
 export class TechLocationSearchComponent extends ComponentBase implements OnInit, OnDestroy {
-  @Output() searchType: EventEmitter<string> = new EventEmitter();
-
   techLocationFormGroup: FormGroup;
   techLocationFormGroupSubscription: Subscription;
   techLocationCriteriaChangeSubscription: Subscription;
+
+  itemsPerPageOptions: number[] = [5, 10, 25, 50, 100];
+  defaultPerPageOption = '10';
+  page = 1; // INITIAL DEFAULT PAGE FOR API;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -29,9 +31,6 @@ export class TechLocationSearchComponent extends ComponentBase implements OnInit
   }
 
   ngOnInit() {
-    // USE TO INDICATE THE FORM TYPE;
-    this.searchType.emit('tech-location-search');
-
     this.techLocationFormGroup = this.formBuilder.group(
       {
         location: new FormControl('', [
@@ -41,16 +40,27 @@ export class TechLocationSearchComponent extends ComponentBase implements OnInit
         ]),
         technology: new FormControl('', [
           Validators.required
+        ]),
+        itemsPerPage: new FormControl(this.defaultPerPageOption[2], [
+          Validators.required,
+          Validators.min(1),
+          Validators.max(100)
         ])
       }
     );
 
-    this.techLocationFormGroupSubscription = this.techLocationFormGroup.valueChanges.subscribe(
-      formChange => this.handleFormValueChange(formChange)
-    );
+    this.techLocationFormGroupSubscription = this.techLocationFormGroup.valueChanges.pipe()
+      .debounceTime(1500)
+      .subscribe(
+        formChange => {
+          this.handleFormValueChange(formChange);
+          this.searchService.showRepositoryResultsPanel.next(false);
+          this.searchService.showTechLocationsResultsPanel.next(true);
+        }
+      );
 
     this.techLocationCriteriaChangeSubscription = this.searchService.onTechnologyLocationCriteriaChange.pipe()
-      .debounceTime(1500)
+      .debounceTime(599)
       .subscribe(criteria => this.performTechLocationSearch(criteria))
 
   }

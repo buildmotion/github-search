@@ -23,7 +23,7 @@ export class SearchFormComponent extends ComponentBase implements OnInit, OnDest
   responseChangeSubscription: Subscription;
   formValueChangeSubscription: Subscription;
 
-  itemsPerPageOptions: number[] = [5,10,25,50,100];
+  itemsPerPageOptions: number[] = [5, 10, 25, 50, 100];
   defaultPerPageOption = '10';
   page = 1; // INITIAL DEFAULT PAGE FOR API;
 
@@ -43,9 +43,6 @@ export class SearchFormComponent extends ComponentBase implements OnInit, OnDest
   }
 
   ngOnInit() {
-    // USE TO INDICATE THE FORM TYPE;
-    this.searchType.emit('repository');
-
     this.searchCriteriaFormGroup = this.formBuilder.group(
       {
         repositoryName: new FormControl('', [
@@ -60,30 +57,40 @@ export class SearchFormComponent extends ComponentBase implements OnInit, OnDest
         ])
       }
     );
-    
+
     this.subscribeToSearchCriteriaChanges();
     this.subscribeToSearchFormValueChanges();
     this.subscribeToRepositoryResultChanges();
   }
 
+  private toggleResultsPanel() {
+    this.searchService.showRepositoryResultsPanel.next(true);
+    this.searchService.showTechLocationsResultsPanel.next(false);
+  }
+
   private subscribeToRepositoryResultChanges() {
     this.responseChangeSubscription = this.searchService.onRepositoryResultChange.pipe()
-      .subscribe(() => { }, 
+      .subscribe(() => { },
         // do nothing with the response on this component; listening for [ErrorResponse];
-        error => this.handleServiceErrors(error, this.searchService.serviceContext), 
+        error => this.handleServiceErrors(error, this.searchService.serviceContext),
         () => this.finishRequest(`Finished processing response from the the [search criteria] form.`));
   }
 
   private subscribeToSearchCriteriaChanges() {
     this.searchCriteriaChangeSubscription = this.searchService.onSearchCriteriaChange.pipe()
-      .debounceTime(1500)
+      .debounceTime(777)
       .subscribe(searchCriteria => this.performRepositorySearch(searchCriteria));
   }
 
   private subscribeToSearchFormValueChanges() {
-    this.formValueChangeSubscription = this.searchCriteriaFormGroup.valueChanges.subscribe(
-      criteriaChange => this.handleSearchCriteriaChange(criteriaChange)
-      );
+    this.formValueChangeSubscription = this.searchCriteriaFormGroup.valueChanges.pipe()
+    .debounceTime(1776)  
+    .subscribe(
+      criteriaChange => {
+        this.handleSearchCriteriaChange(criteriaChange);
+        this.toggleResultsPanel();
+      }
+    );
   }
 
   private handleSearchCriteriaChange(searchCriteria: SearchCriteria) {
@@ -94,7 +101,7 @@ export class SearchFormComponent extends ComponentBase implements OnInit, OnDest
   }
 
   private performRepositorySearch(searchCriteria: SearchCriteria) {
-    if(this.searchCriteriaFormGroup.valid) {
+    if (this.searchCriteriaFormGroup.valid) {
       this.loggingService.log(this.componentName, Severity.Information, `Preparing to process search criteria: ${JSON.stringify(searchCriteria)}`)
       this.searchService.searchByRepository(searchCriteria);
     }

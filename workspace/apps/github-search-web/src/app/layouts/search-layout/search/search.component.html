@@ -36,14 +36,14 @@
                             <div class="tab-pane active" id="profile">
                                 <h3>Github User Search:</h3>
                                 <!-- CREATE REACTIVE FORM HERE WITH SEARCH INPUT -->
-                                <angularlicious-search-form (searchType)="handleSearchType()"></angularlicious-search-form>
+                                <angularlicious-search-form></angularlicious-search-form>
                             </div>
                             <!-- USER SEARCH FORM: END -->
 
                             <!-- TECHNOLOGY & LOCATION SEARCH FORM: START -->
                             <div class="tab-pane" id="messages">
                                 <h3>Technology & Location Search</h3>
-                                <angularlicious-tech-location-search (searchType)="handleSearchType()"></angularlicious-tech-location-search>
+                                <angularlicious-tech-location-search></angularlicious-tech-location-search>
                             </div>
                             <!-- TECHNOLOGY & LOCATION SEARCH FORM: END -->
 
@@ -55,11 +55,11 @@
         <!-- GITHUB SEARCH TABS: USERS, TECHNOLOGY, AND LOCATION: END-->
 
         <!-- SEARCH RESULTS STATISTICS: START -->
-        <angularlicious-repository-stats [searchType]="searchType"></angularlicious-repository-stats>
+        <angularlicious-repository-stats></angularlicious-repository-stats>
         <!-- SEARCH RESULTS STATISTICS: START -->
 
         <!-- SEARCH RESULTS: START -->
-        <angularlicious-repository-results [searchType]="searchType"></angularlicious-repository-results>
+        <angularlicious-repository-results></angularlicious-repository-results>
         <!-- SEARCH RESULTS: END -->
 
     </div>

@@ -7,15 +7,21 @@ import { RepositoryResponse } from '../../layouts/search-layout/models/repositor
 import { GitHubUser } from '../../layouts/search-layout/models/owner.model';
 import { SearchCriteria } from '../../layouts/search-layout/models/i-search-criteria.model';
 import { TechLocationCriteria } from '../../layouts/search-layout/models/i-tech-location.model';
+import { UserProfileResponse } from '../../layouts/search-layout/models/user-profile.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GithubSearchService extends ServiceBase {
   
+  public showRepositoryResultsPanel: Subject<boolean> = new ReplaySubject<boolean>(1);
+  public showTechLocationsResultsPanel: Subject<boolean> = new ReplaySubject<boolean>(1);
+
   public onTechnologyLocationCriteriaChange: Subject<TechLocationCriteria> = new ReplaySubject<TechLocationCriteria>(1);
   public onSearchCriteriaChange: Subject<SearchCriteria> = new ReplaySubject<SearchCriteria>(1);
   public onRepositoryResultChange: Subject<RepositoryResponse> = new ReplaySubject<RepositoryResponse>(1);
+  public onTechLocationResultChange: Subject<UserProfileResponse> = new ReplaySubject<UserProfileResponse>(1);
+  
   public showRepositoryResultSpinner: Subject<boolean> = new ReplaySubject<boolean>(1);
   public showTechLocationResultSpinner: Subject<boolean> = new ReplaySubject<boolean>(1);
   private _searchCriteria: SearchCriteria;
@@ -71,6 +77,8 @@ export class GithubSearchService extends ServiceBase {
 
   searchByTechLocation(searchCriteria: TechLocationCriteria): any {
     this.resetServiceContext();
+    this._totalSearches = this._totalSearches + 1;
+    
     this.showTechLocationResultSpinner.next(true);
 
     this.businessProvider.searchByTechLocation(searchCriteria).subscribe(
@@ -95,7 +103,7 @@ export class GithubSearchService extends ServiceBase {
 
   handleTechLocationResponse(response) {
     this.showRepositoryResultSpinner.next(false);
-    this.onRepositoryResultChange.next(response);
+    this.onTechLocationResultChange.next(response);
   }
 
   handleTechLocationErrorResponse(errorResponse: ErrorResponse) {

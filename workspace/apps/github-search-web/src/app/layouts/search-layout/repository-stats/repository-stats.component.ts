@@ -5,6 +5,7 @@ import { GithubSearchService } from '../../../services/github-search/github-sear
 import { AngularliciousLoggingService } from '@angularlicious/logging';
 import { Router } from '@angular/router';
 import { ComponentBase, ErrorResponse } from '@angularlicious/foundation';
+import { Profile } from '../models/user-profile.model';
 
 @Component({
   selector: 'angularlicious-repository-stats',
@@ -17,7 +18,11 @@ export class RepositoryStatsComponent extends ComponentBase implements OnInit, O
 
   searchCriteriaChangeSubscription: Subscription;
   repositoryResultSubscription: Subscription;
+  techLocationResultSubscription: Subscription;
+
   repositories: Repository[];
+  userProfiles: Profile[];
+
   totalCount: number;
   incompleteResults: boolean
   responseCount: number;
@@ -35,26 +40,25 @@ export class RepositoryStatsComponent extends ComponentBase implements OnInit, O
   }
 
   ngOnInit() {
-    if (this.searchType === 'repository') {
-      this.repositoryResultSubscription = this.searchService.onRepositoryResultChange.subscribe(
-        response => this.handleRepositoryResponse(response),
-        error => this.handleRepositoryResponse(error),
-        () => this.finishRequest(`Finished processing changes for repository results.`)
-      );
-  
-      this.searchCriteriaChangeSubscription = this.searchService.onSearchCriteriaChange.subscribe(
-        searchCriteria => { this.itemsPerPage = searchCriteria.itemsPerPage; }
-      );
-    }
-    
+    this.repositoryResultSubscription = this.searchService.onRepositoryResultChange.subscribe(
+      response => this.handleRepositoryResponse(response),
+      error => this.handleRepositoryResponse(error),
+      () => this.finishRequest(`Finished processing changes for repository results.`)
+    );
+
+    this.techLocationResultSubscription = this.searchService.onTechLocationResultChange.subscribe(
+      response => this.handleTechLocationResponse(response),
+    );
+
+    this.searchCriteriaChangeSubscription = this.searchService.onSearchCriteriaChange.subscribe(
+      searchCriteria => { this.itemsPerPage = searchCriteria.itemsPerPage; }
+    );
   }
 
   ngOnDestroy(): void {
-    if (this.searchType === 'repository') {
-      this.repositoryResultSubscription.unsubscribe();
-      this.searchCriteriaChangeSubscription.unsubscribe();
-    }
-    
+    this.repositoryResultSubscription.unsubscribe();
+    this.searchCriteriaChangeSubscription.unsubscribe();
+    this.techLocationResultSubscription.unsubscribe();
   }
 
   handleRepositoryResponse(response) {
@@ -71,6 +75,25 @@ export class RepositoryStatsComponent extends ComponentBase implements OnInit, O
         this.incompleteResults = response.incomplete_results;
         this.resultPageNumber = 1;
         this.responseCount = this.repositories.length;
+        this.totalSearches = this.searchService.totalSearches;
+      }
+    }
+  }
+
+  handleTechLocationResponse(response) {
+    if (response instanceof ErrorResponse) {
+      // do not display any stats ==> hide the stat cards;
+      this.showStatCards = false;
+    } else {
+      if (response) {
+        this.showStatCards = true;
+
+        // setup the data;
+        this.userProfiles = response.items;
+        this.totalCount = response.total_count;
+        this.incompleteResults = response.incomplete_results;
+        this.resultPageNumber = 1;
+        this.responseCount = this.userProfiles.length;
         this.totalSearches = this.searchService.totalSearches;
       }
     }

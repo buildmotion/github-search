@@ -55,6 +55,14 @@
       </mat-form-field>
     </div>
 
+    <div>
+      <mat-form-field class="search-full-width">
+        <mat-select formControlName="itemsPerPage" placeholder="Items per page">
+          <mat-option *ngFor="let option of itemsPerPageOptions" [value]="option">{{option}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    
     <p>
       Form Value: {{ techLocationFormGroup.value | json }}
     </p>
