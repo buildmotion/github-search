@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, Input } from '@angular/core';
 import { MatTableDataSource, MatPaginator } from '@angular/material';
 import { ComponentBase, ErrorResponse } from '@angularlicious/foundation';
 import { AngularliciousLoggingService, Severity } from '@angularlicious/logging';
@@ -14,6 +14,8 @@ import { SearchCriteria } from '../models/i-search-criteria.model';
   styleUrls: ['./repository-results.component.css']
 })
 export class RepositoryResultsComponent extends ComponentBase implements OnInit, OnDestroy {
+  @Input() searchType: string;
+
   displayedColumns: string[] = ['id', 'name', 'login', 'last update'];
   dataSource: MatTableDataSource<Repository> = new MatTableDataSource<Repository>();
   @ViewChild('repositoryPaginator') paginator: MatPaginator;
@@ -37,24 +39,29 @@ export class RepositoryResultsComponent extends ComponentBase implements OnInit,
   }
 
   ngOnInit() {
-    this.dataSource.paginator = this.paginator;
 
-    this.repositoryResultSubscription = this.searchService.onRepositoryResultChange.subscribe(
-      response => this.handleRepositoryResponse(response),
-      error => this.handleServiceErrors(error, this.searchService.serviceContext),
-      () => this.finishRequest(`Finished processing request for repositories.`)
-    );
+    // ONLY INIT IF THE CORRECT TAB/FORM IS ACTIVE;
+    if (this.searchType === 'repository') {
+      this.dataSource.paginator = this.paginator;
 
-    this.showSpinnerSubscription = this.searchService.showRepositoryResultSpinner.subscribe(
-      showSpinner => {
-        this.showSpinner = showSpinner;
-        this.hasData = false;
-      }
-    );
+      this.repositoryResultSubscription = this.searchService.onRepositoryResultChange.subscribe(
+        response => this.handleRepositoryResponse(response),
+        error => this.handleServiceErrors(error, this.searchService.serviceContext),
+        () => this.finishRequest(`Finished processing request for repositories.`)
+      );
 
-    this.searchCriteriaSubscription = this.searchService.onSearchCriteriaChange.subscribe(
-      searchCriteriaChange => this.handleSearchCriteriaChange(searchCriteriaChange)
-    );
+      this.showSpinnerSubscription = this.searchService.showRepositoryResultSpinner.subscribe(
+        showSpinner => {
+          this.showSpinner = showSpinner;
+          this.hasData = false;
+        }
+      );
+
+      this.searchCriteriaSubscription = this.searchService.onSearchCriteriaChange.subscribe(
+        searchCriteriaChange => this.handleSearchCriteriaChange(searchCriteriaChange)
+      );
+    }
+
   }
 
   private setupDataSource() {
@@ -63,16 +70,18 @@ export class RepositoryResultsComponent extends ComponentBase implements OnInit,
   }
 
   ngOnDestroy(): void {
-    this.repositoryResultSubscription.unsubscribe();
-    this.showSpinnerSubscription.unsubscribe();
-    this.searchCriteriaSubscription.unsubscribe();
-  }
-  
-    handleSearchCriteriaChange(searchCriteriaChange: SearchCriteria) {
-      if(searchCriteriaChange && searchCriteriaChange.itemsPerPage > 0) {
-        this.paginator.pageSize = searchCriteriaChange.itemsPerPage;
-      }
+    if (this.searchType === 'repository') {
+      this.repositoryResultSubscription.unsubscribe();
+      this.showSpinnerSubscription.unsubscribe();
+      this.searchCriteriaSubscription.unsubscribe();
     }
+  }
+
+  handleSearchCriteriaChange(searchCriteriaChange: SearchCriteria) {
+    if (searchCriteriaChange && searchCriteriaChange.itemsPerPage > 0) {
+      this.paginator.pageSize = searchCriteriaChange.itemsPerPage;
+    }
+  }
 
   handleRepositoryResponse(response) {
     if (response instanceof ErrorResponse) {

@@ -11,6 +11,7 @@ import { SharedModule } from '../../modules/shared/shared.module';
 import { RepositoryResultsComponent } from './repository-results/repository-results.component';
 import { RepositoryStatsComponent } from './repository-stats/repository-stats.component';
 import { UserDetailsComponent } from './user-details/user-details.component';
+import { TechLocationSearchComponent } from './tech-location-search/tech-location-search.component';
 
 @NgModule({
   imports: [
@@ -24,7 +25,8 @@ import { UserDetailsComponent } from './user-details/user-details.component';
     SearchFormComponent,
     RepositoryResultsComponent,
     RepositoryStatsComponent,
-    UserDetailsComponent
+    UserDetailsComponent,
+    TechLocationSearchComponent
   ],
   exports: [
     SearchComponent

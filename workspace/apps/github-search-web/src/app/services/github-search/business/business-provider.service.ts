@@ -6,6 +6,8 @@ import { SearchGithubAction as SearchRepositoriesAction } from './actions/search
 import { SearchCriteria } from '../../../layouts/search-layout/models/i-search-criteria.model';
 import { GitHubApiService } from './git-hub-api.service';
 import { RetrieveUserAction } from './actions/retrieve-user-action';
+import { TechLocationCriteria } from '../../../layouts/search-layout/models/i-tech-location.model';
+import { SearchTechLocationAction } from './actions/search-tech-location-action';
 
 @Injectable({
   providedIn: 'root'
@@ -37,6 +39,12 @@ export class BusinessProviderService extends ServiceBase {
    */
   searchByRepository(searchCriteria: SearchCriteria): Observable<ServiceResponse>{
     const action = new SearchRepositoriesAction(searchCriteria);
+    action.Do(this);
+    return action.response;
+  }
+
+  searchByTechLocation(searchCriteria: TechLocationCriteria): any {
+    const action = new SearchTechLocationAction(searchCriteria);
     action.Do(this);
     return action.response;
   }

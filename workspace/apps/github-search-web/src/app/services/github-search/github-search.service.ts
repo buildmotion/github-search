@@ -6,16 +6,18 @@ import { BusinessProviderService } from './business/business-provider.service';
 import { RepositoryResponse } from '../../layouts/search-layout/models/repository-response.model';
 import { GitHubUser } from '../../layouts/search-layout/models/owner.model';
 import { SearchCriteria } from '../../layouts/search-layout/models/i-search-criteria.model';
+import { TechLocationCriteria } from '../../layouts/search-layout/models/i-tech-location.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GithubSearchService extends ServiceBase {
- 
+  
+  public onTechnologyLocationCriteriaChange: Subject<TechLocationCriteria> = new ReplaySubject<TechLocationCriteria>(1);
   public onSearchCriteriaChange: Subject<SearchCriteria> = new ReplaySubject<SearchCriteria>(1);
   public onRepositoryResultChange: Subject<RepositoryResponse> = new ReplaySubject<RepositoryResponse>(1);
   public showRepositoryResultSpinner: Subject<boolean> = new ReplaySubject<boolean>(1);
-  private repositoryResponse: RepositoryResponse;
+  public showTechLocationResultSpinner: Subject<boolean> = new ReplaySubject<boolean>(1);
   private _searchCriteria: SearchCriteria;
   private _totalSearches: number;
 
@@ -32,7 +34,7 @@ export class GithubSearchService extends ServiceBase {
   constructor(
     loggingService: AngularliciousLoggingService,
     private businessProvider: BusinessProviderService
-  ) { 
+  ) {
     super(loggingService);
     this.serviceName = 'GithubSearchService';
     this._totalSearches = 0;
@@ -42,7 +44,7 @@ export class GithubSearchService extends ServiceBase {
     this.businessProvider.loggingService = this.loggingService;
   }
 
-  retrieveUser(userName: string) : void {
+  retrieveUser(userName: string): void {
     this.resetServiceContext();
     this.userName = userName;
 
@@ -67,27 +69,48 @@ export class GithubSearchService extends ServiceBase {
     );
   }
 
+  searchByTechLocation(searchCriteria: TechLocationCriteria): any {
+    this.resetServiceContext();
+    this.showTechLocationResultSpinner.next(true);
+
+    this.businessProvider.searchByTechLocation(searchCriteria).subscribe(
+      response => this.handleTechLocationResponse(response),
+      error => this.handleTechLocationErrorResponse(error),
+      () => this.finishRequest(this.serviceName)
+    );
+  }
+
   handleRepositoryResponse(response) {
-    this.repositoryResponse = response;
     this.showRepositoryResultSpinner.next(false);
     this.onRepositoryResultChange.next(response);
   }
 
   handleRepositoryErrorResponse(errorResponse: ErrorResponse) {
-    if(errorResponse instanceof ErrorResponse) {
-      this.repositoryResponse = new RepositoryResponse(); 
-
+    if (errorResponse instanceof ErrorResponse) {
       //BUBBLE THE ERROR INFORMATION TO THE SERVICE CONSUMER;
       this.onRepositoryResultChange.error(errorResponse);
     }
     this.showRepositoryResultSpinner.next(false);
   }
 
+  handleTechLocationResponse(response) {
+    this.showRepositoryResultSpinner.next(false);
+    this.onRepositoryResultChange.next(response);
+  }
+
+  handleTechLocationErrorResponse(errorResponse: ErrorResponse) {
+    if (errorResponse instanceof ErrorResponse) {
+      //BUBBLE THE ERROR INFORMATION TO THE SERVICE CONSUMER;
+      this.onRepositoryResultChange.error(errorResponse);
+    }
+    this.showTechLocationResultSpinner.next(false);
+  }
+
   handleUserResponse(response) {
     this.userResponse = response;
     this.onUserResultChange.next(response);
   }
-  
+
   get searchCriteria(): SearchCriteria {
     return this._searchCriteria;
   }

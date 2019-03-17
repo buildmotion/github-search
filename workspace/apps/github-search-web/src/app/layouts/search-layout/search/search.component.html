@@ -1,3 +1,5 @@
+<!-- THE [SEARCH COMPONENT] IS THE CONTAINER/COORDINATING COMPONENT (OTHER ITEMS ARE PRESENTATIONAL) -->
+
 <div class="main-content">
     <div class="container-fluid">
 
@@ -18,13 +20,8 @@
                                     </li>
                                     <li class="nav-item">
                                         <a mat-button class="nav-link" href="#messages" data-toggle="tab">
-                                            <i class="material-icons">code</i> Technology
-                                            <div class="ripple-container"></div>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a mat-button class="nav-link" href="#settings" data-toggle="tab">
-                                            <i class="material-icons">location_on</i> Location
+                                            <i class="material-icons">code</i>/<i class="material-icons">location_on</i>
+                                            Technology & Location
                                             <div class="ripple-container"></div>
                                         </a>
                                     </li>
@@ -39,21 +36,16 @@
                             <div class="tab-pane active" id="profile">
                                 <h3>Github User Search:</h3>
                                 <!-- CREATE REACTIVE FORM HERE WITH SEARCH INPUT -->
-                                <angularlicious-search-form></angularlicious-search-form>
+                                <angularlicious-search-form (searchType)="handleSearchType()"></angularlicious-search-form>
                             </div>
                             <!-- USER SEARCH FORM: END -->
 
-                            <!-- TECHNOLOGY SEARCH FORM: START -->
+                            <!-- TECHNOLOGY & LOCATION SEARCH FORM: START -->
                             <div class="tab-pane" id="messages">
-                                <h3>Github Technology Search</h3>
+                                <h3>Technology & Location Search</h3>
+                                <angularlicious-tech-location-search (searchType)="handleSearchType()"></angularlicious-tech-location-search>
                             </div>
-                            <!-- TECHNOLOGY SEARCH FORM: END -->
-
-                            <!-- LOCATION SEARCH FORM: START -->
-                            <div class="tab-pane" id="settings">
-                                <h3>Github Location Search:</h3>
-                            </div>
-                            <!-- LOCATION SEARCH FORM: START -->
+                            <!-- TECHNOLOGY & LOCATION SEARCH FORM: END -->
 
                         </div>
                     </div>
@@ -63,11 +55,11 @@
         <!-- GITHUB SEARCH TABS: USERS, TECHNOLOGY, AND LOCATION: END-->
 
         <!-- SEARCH RESULTS STATISTICS: START -->
-        <angularlicious-repository-stats></angularlicious-repository-stats>
+        <angularlicious-repository-stats [searchType]="searchType"></angularlicious-repository-stats>
         <!-- SEARCH RESULTS STATISTICS: START -->
 
         <!-- SEARCH RESULTS: START -->
-        <angularlicious-repository-results></angularlicious-repository-results>
+        <angularlicious-repository-results [searchType]="searchType"></angularlicious-repository-results>
         <!-- SEARCH RESULTS: END -->
 
     </div>

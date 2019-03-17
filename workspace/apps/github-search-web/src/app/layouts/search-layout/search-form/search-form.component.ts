@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { ComponentBase, ServiceResponse } from '@angularlicious/foundation';
 import { AngularliciousLoggingService, Severity } from '@angularlicious/logging';
@@ -7,7 +7,6 @@ import { Router } from '@angular/router';
 import { GithubSearchService } from './../../../services/github-search/github-search.service';
 import { Subject, Subscription } from 'rxjs-compat';
 import { SearchCriteria } from '../models/i-search-criteria.model';
-import { environment } from './../../../../environments/environment';
 
 @Component({
   selector: 'angularlicious-search-form',
@@ -16,11 +15,13 @@ import { environment } from './../../../../environments/environment';
 })
 export class SearchFormComponent extends ComponentBase implements OnInit, OnDestroy {
 
+  @Output() searchType = new EventEmitter<string>();
 
   searchCriteriaFormGroup: FormGroup;
   searchCriteriaChanged = new Subject<SearchCriteria>();
   searchCriteriaChangeSubscription: Subscription;
   responseChangeSubscription: Subscription;
+  formValueChangeSubscription: Subscription;
 
   itemsPerPageOptions: number[] = [5,10,25,50,100];
   defaultPerPageOption = '10';
@@ -38,9 +39,13 @@ export class SearchFormComponent extends ComponentBase implements OnInit, OnDest
   ngOnDestroy(): void {
     this.searchCriteriaChangeSubscription.unsubscribe();
     this.responseChangeSubscription.unsubscribe();
+    this.formValueChangeSubscription.unsubscribe();
   }
 
   ngOnInit() {
+    // USE TO INDICATE THE FORM TYPE;
+    this.searchType.emit('repository');
+
     this.searchCriteriaFormGroup = this.formBuilder.group(
       {
         repositoryName: new FormControl('', [
@@ -63,20 +68,20 @@ export class SearchFormComponent extends ComponentBase implements OnInit, OnDest
 
   private subscribeToRepositoryResultChanges() {
     this.responseChangeSubscription = this.searchService.onRepositoryResultChange.pipe()
-      .subscribe(() => { }, // do nothing with the response on this component; listening for [ErrorResponse];
+      .subscribe(() => { }, 
         // do nothing with the response on this component; listening for [ErrorResponse];
-        error => this.handleServiceErrors(error, this.searchService.serviceContext), () => this.finishRequest(`Finished processing response from the the [search criteria] form.`));
+        error => this.handleServiceErrors(error, this.searchService.serviceContext), 
+        () => this.finishRequest(`Finished processing response from the the [search criteria] form.`));
   }
 
   private subscribeToSearchCriteriaChanges() {
-    // this.searchCriteriaChangeSubscription = this.searchCriteriaChanged.pipe()
     this.searchCriteriaChangeSubscription = this.searchService.onSearchCriteriaChange.pipe()
       .debounceTime(1500)
       .subscribe(searchCriteria => this.performRepositorySearch(searchCriteria));
   }
 
   private subscribeToSearchFormValueChanges() {
-    this.searchCriteriaFormGroup.valueChanges.subscribe(
+    this.formValueChangeSubscription = this.searchCriteriaFormGroup.valueChanges.subscribe(
       criteriaChange => this.handleSearchCriteriaChange(criteriaChange)
       );
   }
