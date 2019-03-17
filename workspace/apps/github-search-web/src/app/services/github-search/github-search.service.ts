@@ -12,11 +12,12 @@ import { SearchCriteria } from '../../layouts/search-layout/models/i-search-crit
 })
 export class GithubSearchService extends ServiceBase {
  
-  public onSearchCriteriaChange: Subject<SearchCriteria> = new ReplaySubject<SearchCriteria>(4);
-  public onRepositoryResultChange: Subject<RepositoryResponse> = new ReplaySubject<RepositoryResponse>(4);
-  public showRepositoryResultSpinner: Subject<boolean> = new ReplaySubject<boolean>(4);
+  public onSearchCriteriaChange: Subject<SearchCriteria> = new ReplaySubject<SearchCriteria>(1);
+  public onRepositoryResultChange: Subject<RepositoryResponse> = new ReplaySubject<RepositoryResponse>(1);
+  public showRepositoryResultSpinner: Subject<boolean> = new ReplaySubject<boolean>(1);
   private repositoryResponse: RepositoryResponse;
   private _searchCriteria: SearchCriteria;
+  private _totalSearches: number;
 
   public onUserResultChange: Subject<GitHubUser> = new ReplaySubject<GitHubUser>(1);
   userName: string;
@@ -54,6 +55,7 @@ export class GithubSearchService extends ServiceBase {
   searchByRepository(searchCriteria: SearchCriteria): void {
     this.resetServiceContext();
     this._searchCriteria = searchCriteria;
+    this._totalSearches++;
 
     this.showRepositoryResultSpinner.next(true);
 
@@ -89,8 +91,11 @@ export class GithubSearchService extends ServiceBase {
   
   /**
    * Use to retrieve the current value of the repository name search criteria.
-   */
   get searchCriteria(): SearchCriteria {
     return this._searchCriteria;
+  }
+
+  get totalSearches(): number {
+    return this._totalSearches;
   }
 }

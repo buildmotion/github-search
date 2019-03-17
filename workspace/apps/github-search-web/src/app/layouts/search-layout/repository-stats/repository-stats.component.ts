@@ -22,6 +22,7 @@ export class RepositoryStatsComponent extends ComponentBase implements OnInit, O
   resultPageNumber: number;
   itemsPerPage: number;
   showStatCards = false;
+  totalSearches: number;
   
   constructor(
     private searchService: GithubSearchService,
@@ -61,6 +62,7 @@ export class RepositoryStatsComponent extends ComponentBase implements OnInit, O
         this.incompleteResults = response.incomplete_results;
         this.resultPageNumber = 69;
         this.responseCount = this.repositories.length;
+        this.totalSearches = this.searchService.totalSearches;
       } 
     }
   }

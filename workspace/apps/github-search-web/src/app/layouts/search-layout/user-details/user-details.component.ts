@@ -4,7 +4,7 @@ import { AngularliciousLoggingService } from '@angularlicious/logging';
 import { ComponentBase, ErrorResponse } from '@angularlicious/foundation';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { Owner } from '../models/repository.model';
+import { GithubUser } from '../../../services/github-search/models/github-user.model';
 
 @Component({
   selector: 'angularlicious-user-details',
@@ -16,7 +16,7 @@ export class UserDetailsComponent extends ComponentBase implements OnInit, OnDes
   userNameSubscription: Subscription;
   userResponseSubscription: Subscription;
   userName: string;
-  user: Owner;
+  user: GithubUser;
 
   constructor(
     private searchService: GithubSearchService,
