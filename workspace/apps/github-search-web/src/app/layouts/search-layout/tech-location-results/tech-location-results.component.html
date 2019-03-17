@@ -1,0 +1,23 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col">
+        <div class="card card-profile card-columns" *ngFor="let user of userProfiles">
+          <div class="card-avatar">
+            <a href="{{user.html_url}}" target="_blank">
+              <img class="img" src="{{user.avatar_url}}" alt="{{user.login}}" />
+            </a>
+          </div>
+          <div class="card-body">
+            <h4 class="card-title">{{user.login}}</h4>
+            <h4>Score: {{user.score}}</h4>
+            <p class="card-description">
+                <a [routerLink]="['/user-profile', user.login]" class="mat-raised-button mat-primary">User Profile</a>&nbsp;
+                <a href="{{user.html_url}}" target="_blank" class="mat-raised-button mat-primary">GitHub</a>&nbsp;
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

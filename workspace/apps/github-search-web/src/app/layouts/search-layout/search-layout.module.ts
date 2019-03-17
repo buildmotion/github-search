@@ -12,6 +12,7 @@ import { RepositoryResultsComponent } from './repository-results/repository-resu
 import { RepositoryStatsComponent } from './repository-stats/repository-stats.component';
 import { UserDetailsComponent } from './user-details/user-details.component';
 import { TechLocationSearchComponent } from './tech-location-search/tech-location-search.component';
+import { TechLocationResultsComponent } from './tech-location-results/tech-location-results.component';
 
 @NgModule({
   imports: [
@@ -26,7 +27,8 @@ import { TechLocationSearchComponent } from './tech-location-search/tech-locatio
     RepositoryResultsComponent,
     RepositoryStatsComponent,
     UserDetailsComponent,
-    TechLocationSearchComponent
+    TechLocationSearchComponent,
+    TechLocationResultsComponent
   ],
   exports: [
     SearchComponent

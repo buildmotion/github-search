@@ -11,37 +11,37 @@
                         <form>
                             <div class="row" *ngIf="user">
                                 <div class="col-md-5">
-                                  Company: {{ (user.company !== null) ? user.company : ""}}
+                                    Company: {{ (user.company !== null) ? user.company : ""}}
                                 </div>
                                 <div class="col-md-3">
                                     UserName: {{ (user.login !== null ) ? user.login : ""}}
                                 </div>
                                 <div class="col-md-4">
-                                   Email: {{ (user.email !== null) ? user.email : ""}}
+                                    Email: {{ (user.email !== null) ? user.email : ""}}
                                 </div>
                             </div>
                             <div class="row" *ngIf="user">
                                 <div class="col-md-6">
-                                  Name:  {{user.name}}
+                                    Name: {{user.name}}
                                 </div>
                             </div>
                             <div class="row" *ngIf="user">
                                 <div class="col-md-12">
-                                  Location:  {{ (user.location !== null) ? user.location : ""}}
+                                    Location: {{ (user.location !== null) ? user.location : ""}}
                                 </div>
                             </div>
                             <div class="row" *ngIf="user">
                                 <div class="col-md-4">
-                                 Followers: {{user.followers}}
+                                    Followers: {{user.followers}}
                                 </div>
                                 <div class="col-md-4">
-                                  Following: {{user.following}}
+                                    Following: {{user.following}}
                                 </div>
                             </div>
                             <div class="row" *ngIf="user">
                                 <div class="col-md-12">
-                                  <label>About Me</label>
-                                  {{ (user.bio !== null) ? user.bio : ""}}
+                                    <label>About Me</label>
+                                    {{ (user.bio !== null) ? user.bio : ""}}
                                 </div>
                             </div>
                             <div class="clearfix"></div>
@@ -52,14 +52,12 @@
             <div class="col-md-4">
                 <div class="card card-profile">
                     <div class="card-avatar">
-                        <a href="{{html_url}}" target="_blank">
-                            <img class="img" src="{{user.avatar_url}}" alt="{{user.name}}" />
-                        </a>
+                        <img class="img" src="{{user.avatar_url}}" alt="{{user.name}}" />
                     </div>
                     <div class="card-body">
                         <h4 class="card-title">{{user.name}}</h4>
                         <p class="card-description">
-                          {{ (user.bio !== null) ? user.bio : ""}}
+                            {{ (user.bio !== null) ? user.bio : ""}}
                         </p>
                         <a href="#pablo" class="btn btn-danger btn-round">Follow</a>
                     </div>
@@ -67,5 +65,4 @@
             </div>
         </div>
     </div>
-  </div>
-  
+</div>
