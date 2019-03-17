@@ -25,7 +25,6 @@ export class SearchFormComponent extends ComponentBase implements OnInit, OnDest
   itemsPerPageOptions: number[] = [5,10,25,50,100];
   defaultPerPageOption = '10';
   page = 1; // INITIAL DEFAULT PAGE FOR API;
-  isDebug: boolean;
 
   constructor(
     loggingService: AngularliciousLoggingService,
@@ -42,7 +41,6 @@ export class SearchFormComponent extends ComponentBase implements OnInit, OnDest
   }
 
   ngOnInit() {
-    this.isDebug = (environment.production !== true);
     this.searchCriteriaFormGroup = this.formBuilder.group(
       {
         repositoryName: new FormControl('', [
@@ -73,22 +71,20 @@ export class SearchFormComponent extends ComponentBase implements OnInit, OnDest
   private subscribeToSearchCriteriaChanges() {
     // this.searchCriteriaChangeSubscription = this.searchCriteriaChanged.pipe()
     this.searchCriteriaChangeSubscription = this.searchService.onSearchCriteriaChange.pipe()
-      .debounceTime(1200)
-      .distinctUntilChanged()
+      .debounceTime(1500)
       .subscribe(searchCriteria => this.performRepositorySearch(searchCriteria));
   }
 
   private subscribeToSearchFormValueChanges() {
-    this.searchCriteriaFormGroup.valueChanges.pipe()
-      .debounceTime(750)
-      .subscribe(criteriaChange => this.handleSearchCriteriaChange(criteriaChange));
+    this.searchCriteriaFormGroup.valueChanges.subscribe(
+      criteriaChange => this.handleSearchCriteriaChange(criteriaChange)
+      );
   }
 
   private handleSearchCriteriaChange(searchCriteria: SearchCriteria) {
     if (searchCriteria) {
       this.loggingService.log(this.componentName, Severity.Information, `Preparing to search for ${searchCriteria.repositoryName}`);
       this.searchService.onSearchCriteriaChange.next(searchCriteria);
-      // this.searchCriteriaChanged.next(searchCriteria);
     }
   }
 

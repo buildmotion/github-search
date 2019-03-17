@@ -60,8 +60,6 @@ export class RepositoryResultsComponent extends ComponentBase implements OnInit,
   private setupDataSource() {
     this.dataSource.paginator = this.paginator
     this.dataSource.data = this.repositories;
-
-    this.paginator.pageSize
   }
 
   ngOnDestroy(): void {
@@ -71,7 +69,7 @@ export class RepositoryResultsComponent extends ComponentBase implements OnInit,
   }
   
     handleSearchCriteriaChange(searchCriteriaChange: SearchCriteria) {
-      if(searchCriteriaChange) {
+      if(searchCriteriaChange && searchCriteriaChange.itemsPerPage > 0) {
         this.paginator.pageSize = searchCriteriaChange.itemsPerPage;
       }
     }

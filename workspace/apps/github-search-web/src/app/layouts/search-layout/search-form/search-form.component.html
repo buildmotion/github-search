@@ -6,7 +6,7 @@
     <div>
 
       <mat-form-field class="search-full-width">
-        <input matInput formControlName="repositoryName" placeholder="Enter repository name...(i.e., buildmotion)" value="">
+        <input matInput formControlName="repositoryName" placeholder="Enter repository name...(i.e., thisdot)" value="">
       </mat-form-field>
 
       <div class="error"
@@ -28,7 +28,7 @@
       </mat-form-field>
     </div>
 
-    <p *ngIf="isDebug">
+    <p>
       Form Value: {{ searchCriteriaFormGroup.value | json }}
     </p>
   </form>

@@ -36,7 +36,7 @@ export class RepositoryStatsComponent extends ComponentBase implements OnInit, O
     this.repositoryResultSubscription = this.searchService.onRepositoryResultChange.subscribe(
       response => this.handleRepositoryResponse(response),
       error => this.handleRepositoryResponse(error),
-      () => this.finishRequest(``)
+      () => this.finishRequest(`Finished processing changes for repository results.`)
     );
 
     this.searchCriteriaChangeSubscription = this.searchService.onSearchCriteriaChange.subscribe(
@@ -61,7 +61,7 @@ export class RepositoryStatsComponent extends ComponentBase implements OnInit, O
         this.repositories = response.items;
         this.totalCount = response.total_count;
         this.incompleteResults = response.incomplete_results;
-        this.resultPageNumber = 69;
+        this.resultPageNumber = 1;
         this.responseCount = this.repositories.length;
         this.totalSearches = this.searchService.totalSearches;
       } 
