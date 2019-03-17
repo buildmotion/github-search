@@ -46,6 +46,7 @@ export class RepositoryStatsComponent extends ComponentBase implements OnInit, O
 
   ngOnDestroy(): void {
     this.repositoryResultSubscription.unsubscribe();
+    this.searchCriteriaChangeSubscription.unsubscribe();
   }
 
   handleRepositoryResponse(response) {

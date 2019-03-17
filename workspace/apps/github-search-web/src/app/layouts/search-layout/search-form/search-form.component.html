@@ -5,8 +5,6 @@
   <form novalidate [formGroup]="searchCriteriaFormGroup">
     <div>
 
-      <!-- <input type="text" placeholder="buildmotion" formControlName="repository"> -->
-
       <mat-form-field class="search-full-width">
         <input matInput formControlName="repositoryName" placeholder="Enter repository name...(i.e., buildmotion)" value="">
       </mat-form-field>
@@ -15,11 +13,11 @@
         *ngIf="searchCriteriaFormGroup.get('repositoryName').hasError('required') && searchCriteriaFormGroup.get('repositoryName').touched">
         Repository name is required.
       </div>
+      
       <div class="error"
         *ngIf="searchCriteriaFormGroup.get('repositoryName').hasError('minlength') && searchCriteriaFormGroup.get('repositoryName').touched">
         Minimum of 2 characters
       </div>
-
     </div>
 
     <div>
@@ -30,7 +28,7 @@
       </mat-form-field>
     </div>
 
-    <p>
+    <p *ngIf="isDebug">
       Form Value: {{ searchCriteriaFormGroup.value | json }}
     </p>
   </form>

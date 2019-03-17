@@ -67,6 +67,7 @@ export class RepositoryResultsComponent extends ComponentBase implements OnInit,
   ngOnDestroy(): void {
     this.repositoryResultSubscription.unsubscribe();
     this.showSpinnerSubscription.unsubscribe();
+    this.searchCriteriaSubscription.unsubscribe();
   }
   
     handleSearchCriteriaChange(searchCriteriaChange: SearchCriteria) {

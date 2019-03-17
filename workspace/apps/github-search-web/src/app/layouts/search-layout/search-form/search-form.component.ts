@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 import { GithubSearchService } from './../../../services/github-search/github-search.service';
 import { Subject, Subscription } from 'rxjs-compat';
 import { SearchCriteria } from '../models/i-search-criteria.model';
-import { RepositoryResponse } from '../models/repository-response.model';
+import { environment } from './../../../../environments/environment';
 
 @Component({
   selector: 'angularlicious-search-form',
@@ -25,6 +25,7 @@ export class SearchFormComponent extends ComponentBase implements OnInit, OnDest
   itemsPerPageOptions: number[] = [5,10,25,50,100];
   defaultPerPageOption = '10';
   page = 1; // INITIAL DEFAULT PAGE FOR API;
+  isDebug: boolean;
 
   constructor(
     loggingService: AngularliciousLoggingService,
@@ -37,9 +38,11 @@ export class SearchFormComponent extends ComponentBase implements OnInit, OnDest
 
   ngOnDestroy(): void {
     this.searchCriteriaChangeSubscription.unsubscribe();
+    this.responseChangeSubscription.unsubscribe();
   }
 
   ngOnInit() {
+    this.isDebug = (environment.production !== true);
     this.searchCriteriaFormGroup = this.formBuilder.group(
       {
         repositoryName: new FormControl('', [

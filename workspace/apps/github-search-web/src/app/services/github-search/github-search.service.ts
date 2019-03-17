@@ -35,6 +35,7 @@ export class GithubSearchService extends ServiceBase {
   ) { 
     super(loggingService);
     this.serviceName = 'GithubSearchService';
+    this._totalSearches = 0;
 
     //IoC: provide the current [ServiceContext] and [LoggingService] to the business provider;
     this.businessProvider.serviceContext = this.serviceContext;
@@ -55,7 +56,7 @@ export class GithubSearchService extends ServiceBase {
   searchByRepository(searchCriteria: SearchCriteria): void {
     this.resetServiceContext();
     this._searchCriteria = searchCriteria;
-    this._totalSearches++;
+    this._totalSearches = this._totalSearches + 1;
 
     this.showRepositoryResultSpinner.next(true);
 
@@ -83,14 +84,10 @@ export class GithubSearchService extends ServiceBase {
   }
 
   handleUserResponse(response) {
-    if(response instanceof GitHubUser) {
-      this.userResponse = response;
-    }
+    this.userResponse = response;
     this.onUserResultChange.next(response);
   }
   
-  /**
-   * Use to retrieve the current value of the repository name search criteria.
   get searchCriteria(): SearchCriteria {
     return this._searchCriteria;
   }
