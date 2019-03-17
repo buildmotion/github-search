@@ -87,8 +87,8 @@ export class SearchFormComponent extends ComponentBase implements OnInit, OnDest
     .debounceTime(1776)  
     .subscribe(
       criteriaChange => {
+        this.toggleResultsPanel();        
         this.handleSearchCriteriaChange(criteriaChange);
-        this.toggleResultsPanel();
       }
     );
   }

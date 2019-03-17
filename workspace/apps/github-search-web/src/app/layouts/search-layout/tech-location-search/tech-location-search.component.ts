@@ -80,4 +80,9 @@ export class TechLocationSearchComponent extends ComponentBase implements OnInit
       this.searchService.searchByTechLocation(searchCriteria);
     }
   }
+
+  toggleResultsPanel() {
+    this.searchService.showRepositoryResultsPanel.next(false);
+    this.searchService.showTechLocationsResultsPanel.next(true);
+  }
 }

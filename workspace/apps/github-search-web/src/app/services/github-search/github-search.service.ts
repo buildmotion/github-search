@@ -59,6 +59,8 @@ export class GithubSearchService extends ServiceBase {
       error => this.handleRepositoryErrorResponse(error),
       () => this.finishRequest(this.serviceName)
     );
+
+    this.showRepositoryResultsPanel.next(true);
   }
 
   searchByRepository(searchCriteria: SearchCriteria): void {
