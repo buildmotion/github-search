@@ -78,7 +78,6 @@ export class SearchFormComponent extends ComponentBase implements OnInit, OnDest
 
   private subscribeToSearchCriteriaChanges() {
     this.searchCriteriaChangeSubscription = this.searchService.onSearchCriteriaChange.pipe()
-      .debounceTime(777)
       .subscribe(searchCriteria => this.performRepositorySearch(searchCriteria));
   }
 

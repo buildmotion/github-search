@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { ServiceBase, ErrorResponse } from '@angularlicious/foundation';
 import { AngularliciousLoggingService } from '@angularlicious/logging';
-import { ReplaySubject, Subject, Observable } from 'rxjs';
+import { ReplaySubject, Subject, Observable, Subscription } from 'rxjs';
 import { BusinessProviderService } from './business/business-provider.service';
 import { RepositoryResponse } from '../../layouts/search-layout/models/repository-response.model';
 import { GitHubUser } from '../../layouts/search-layout/models/owner.model';
 import { SearchCriteria } from '../../layouts/search-layout/models/i-search-criteria.model';
 import { TechLocationCriteria } from '../../layouts/search-layout/models/i-tech-location.model';
 import { UserProfileResponse } from '../../layouts/search-layout/models/user-profile.model';
+import { Repository } from '../../layouts/search-layout/models/repository.model';
 
 @Injectable({
   providedIn: 'root'
@@ -26,10 +27,13 @@ export class GithubSearchService extends ServiceBase {
   public showTechLocationResultSpinner: Subject<boolean> = new ReplaySubject<boolean>(1);
   private _searchCriteria: SearchCriteria;
   private _totalSearches: number;
+  
+  private repositorySubscription: Subscription;
 
   public onUserResultChange: Subject<GitHubUser> = new ReplaySubject<GitHubUser>(1);
   userName: string;
   userResponse: GitHubUser;
+  repositories$: Observable<Repository[]>;
 
   /**
    * Use to provide Github API endpoints for the application.
@@ -70,7 +74,7 @@ export class GithubSearchService extends ServiceBase {
 
     this.showRepositoryResultSpinner.next(true);
 
-    this.businessProvider.searchByRepository(searchCriteria).subscribe(
+    this.repositorySubscription = this.businessProvider.searchByRepository(searchCriteria).subscribe(
       response => this.handleRepositoryResponse(response),
       error => this.handleRepositoryErrorResponse(error),
       () => this.finishRequest(this.serviceName)
@@ -93,6 +97,7 @@ export class GithubSearchService extends ServiceBase {
   handleRepositoryResponse(response) {
     this.showRepositoryResultSpinner.next(false);
     this.onRepositoryResultChange.next(response);
+    this.repositorySubscription.unsubscribe();
   }
 
   handleRepositoryErrorResponse(errorResponse: ErrorResponse) {
